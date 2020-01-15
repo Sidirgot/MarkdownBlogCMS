@@ -1,0 +1,75 @@
+@tailwind base;
+
+@tailwind components;
+
+ .btn {
+    @apply py-2 px-4 rounded text-sm;
+  }
+
+  .btn-indigo {
+    @apply bg-indigo-600 text-white;
+  }
+
+  .btn-indigo:hover {
+    @apply bg-indigo-700;
+  }
+
+  .btn-purple {
+    @apply bg-purple-600 text-white;
+  }
+
+  .btn-purple:hover {
+    @apply bg-purple-700;
+  }
+
+  .btn-yellow {
+    @apply bg-yellow-600 text-white;
+  }
+
+  .btn-yellow:hover {
+    @apply bg-yellow-700;
+  }
+
+  .btn-red {
+    @apply bg-red-600 text-white;
+  }
+
+  .btn-red:hover {
+    @apply bg-red-700;
+  }
+
+  .btn-blue {
+    @apply bg-blue-800 text-white;
+  }
+
+  .btn-blue:hover {
+    @apply bg-blue-900;
+  }
+
+  .btn-teal {
+    @apply bg-teal-600 text-white;
+  }
+
+  .btn-teal:hover {
+    @apply bg-teal-700;
+  }
+
+  .btn:focus {
+    outline: none;
+  }
+
+  .span-icon {
+    @apply rounded-full px-2 py-1;
+  }
+
+@tailwind utilities;
+
+body, html {
+  font-family: 'Lora', serif;
+}
+
+.v--modal {
+  background-color: #1A1C33 !important;
+}
+
+
