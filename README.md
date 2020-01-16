@@ -14,7 +14,7 @@ Both of the above features will be included once they are out.
 - Vuex
 - TailwindCSS
 
-**Included Features**
+## Included Features
 
 - The application is built around a single user.
 - Posts CRUD. Includes a status flag to provide the ability to have a draft post.
@@ -30,15 +30,15 @@ Both of the above features will be included once they are out.
 
 > The Javascript used for the backend is compiled on a different file than the frontend. This is mainly to provide the ability to choose a blade-like approach for the frontend.
 
-**Features in development**
+## Features in development
 
 - I decided to implement Vuex for the backend and I am now in the process of updating the UI.
 - There might be some updates to the Tests and the API endpoints while moving to Vuex.
 
-**Future Improvements**
+## Future Improvements
 
 - I will add a basic frotend template to be able to quickly have the blog ready uppon installation of the application.
 
-**License**
+## License
 
 The Application is open-sourced software licensed under the <a href="https://github.com/Sidirgot/MarkdownBlogCMS/blob/master/LICENSE.md">MIT license</a>.
