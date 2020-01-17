@@ -2,10 +2,26 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SubscribersRequest extends FormRequest
 {
+
+    /**
+    * Determine if the user is authorized to make this request.
+    *
+    * @return bool
+    */
+    public function authorize()
+    {
+        if (request()->has('valid')) {
+            throw new AuthorizationException('You are not authorized for this action.', 403);
+        }
+
+        return true;
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -13,10 +29,6 @@ class SubscribersRequest extends FormRequest
      */
     public function rules()
     {
-        if (request()->has('valid')) {
-            abort(404, 'You Are Not Authorized');
-        }
-
         return [
             'email' => 'required|email|unique:subscribers',
         ];

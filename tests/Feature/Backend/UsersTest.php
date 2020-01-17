@@ -4,7 +4,6 @@ namespace Tests\Feature\Backend;
 
 use App\User;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -14,19 +13,14 @@ class UsersTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_user_can_be_created()
+    public function get_auth_user_info()
     {
-        $this->admin();
+        $user = $this->admin();
 
-        $data = [
-            'name' => 'joe do',
-            'email' => 'joedo@app.com',
-            'password' => '123456'
-        ];
+        $response = $this->json('get', route('auth.user', $user))->decodeResponseJson();
 
-        $this->json('POST', route('users.store'), $data);
-
-        $this->assertDatabaseHas('users', ['name' => $data['name']]);
+        $this->assertEquals($response['name'], $user->name);
+        $this->assertEquals($response['email'], $user->email);
     }
 
     /** @test */
@@ -41,35 +35,11 @@ class UsersTest extends TestCase
             'password' => '123456'
         ];
 
-        $this->json('PATCH', route('users.update', $user), $data);
+        $response = $this->json('patch', route('user.update', $user), $data)->decodeResponseJson();
 
         $this->assertDatabaseMissing('users', ['name' => $user['name']]);
-
         $this->assertDatabaseHas('users', ['name' => $data['name']]);
-    }
-
-    /** @test */
-    public function a_user_can_be_deleted()
-    {
-        $this->admin();
-
-        $user = factory(User::class)->create();
-
-        $this->json('DELETE', route('users.destroy', $user));
-
-        $this->assertDatabaseMissing('users', ['name' => $user['name']]);
-    }
-
-    /** @test */
-    public function get_user_by_the_id()
-    {
-        $this->admin();
-
-        $user = factory(User::class)->create();
-
-        $res = $this->json('GET', route('users.show', $user))->decodeResponseJson();
-
-        $this->assertEquals($res['name'], $user['name']);
+        $this->assertEquals($data['name'], $response['name']);
     }
 
     /** @test */
@@ -83,7 +53,7 @@ class UsersTest extends TestCase
 
         $data = ['avatar' => UploadedFile::fake()->image('avatar.jpg')];
 
-        $this->json('PATCH', route('users.update', $user), $data);
+        $this->json('patch', route('user.update', $user), $data);
 
         Storage::disk('public_uploads')->assertExists('assets/'. $data['avatar']->getClientOriginalname());
 
@@ -104,7 +74,7 @@ class UsersTest extends TestCase
             'avatar' => UploadedFile::fake()->image('avatar.jpg'),
         ];
 
-        $this->json('PATCH', route('users.update', $user), $data);
+        $this->json('patch', route('user.update', $user), $data);
 
         Storage::disk('public_uploads')->assertExists('assets/'. $data['avatar']->getClientOriginalname());
 
@@ -115,7 +85,7 @@ class UsersTest extends TestCase
             'avatar' => UploadedFile::fake()->image('newAvatar.jpg'),
         ];
 
-        $this->json('PATCH', route('users.update', $user->fresh()), $newData);
+        $this->json('patch', route('user.update', $user->fresh()), $newData);
 
         Storage::disk('public_uploads')->assertExists('assets/'. $newData['avatar']->getClientOriginalname());
         Storage::disk('public_uploads')->assertMissing('assets/'. $data['avatar']->getClientOriginalname());
@@ -134,14 +104,14 @@ class UsersTest extends TestCase
              'avatar' => UploadedFile::fake()->image('avatar.jpg'),
          ];
 
-         $this->json('PATCH', route('users.update', $user), $data);
+         $this->json('patch', route('user.update', $user), $data);
 
          Storage::disk('public_uploads')->assertExists('assets/'. $data['avatar']->getClientOriginalname());
 
          $this->assertNotEquals($user->fresh()->avatar, 'assets/user-avatar.jpg');
          $this->assertEquals($user->fresh()->avatar, 'assets/' . $data['avatar']->getClientOriginalName());
 
-         $this->json('PATCH', route('reset.avatar', $user));
+         $this->json('patch', route('reset.avatar', $user));
 
          Storage::disk('public_uploads')->assertMissing('assets/'. $data['avatar']->getClientOriginalname());
          $this->assertEquals($user->fresh()->avatar, 'assets/user-avatar.jpg');

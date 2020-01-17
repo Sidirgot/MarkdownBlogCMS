@@ -47,6 +47,8 @@ class PostsActionTest extends TestCase
     /** @test */
     public function parsed_field_on_the_post_json_response_has_markdown_parsed_content()
     {
+        $this->admin();
+
         $post1 = $this->createPost();
 
         $markdown = new CommonMarkConverter();

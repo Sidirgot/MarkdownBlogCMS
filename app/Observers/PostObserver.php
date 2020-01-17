@@ -21,7 +21,7 @@ class PostObserver
         if (!isset($post['slug'])) {
             $post['slug'] = Str::slug($post['title']);
         }
-        
+
         if (isset($post['image']) && $post['image'] instanceof \Illuminate\Http\UploadedFile) {
             $post['image'] = $this->uploadImage($post['image']);
         }
@@ -34,7 +34,7 @@ class PostObserver
      * @return void
      */
     public function updating(Post $post)
-    {   
+    {
         if (isset($post['title']) && !isset($post['slug'])) {
             $post['slug'] = Str::slug($post['title']);
         }

@@ -8,16 +8,6 @@ use App\User;
 class UserObserver
 {
     use HandleImages;
-    /**
-     * Handle the User "saving" event.
-     *
-     * @param  \App\User  $user
-     * @return void
-     */
-    public function saving(User $user)
-    {
-       $user->password = bcrypt($user['password']);
-    }
 
     /**
      * Handle the User "updating" event.

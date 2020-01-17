@@ -5,7 +5,7 @@ Auth::routes();
 Route::get('/', 'Frontend\MainController@index')->name('welcome');
 
 // New Newsletter Subscriber.
-Route::post('/new/subscriber', 'Frontend\SubscribersController@submit')->name('new.subscriber');
+Route::post('/subscriber/new', 'Frontend\SubscribersController@submit')->name('new.subscriber');
 
 // Cancel Newsletter Subscription.
 Route::delete('/cancel/subscriber/{email}/{token}', 'Frontend\SubscribersController@cancel')
