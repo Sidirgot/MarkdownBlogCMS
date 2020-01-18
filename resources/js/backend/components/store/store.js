@@ -3,18 +3,27 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+import categories from '../categories/categories'
 import posts from '../posts/post'
+
 
 export default new Vuex.Store ({
     modules: {
-        user: [],
+        categories,
         posts,
     },
 
     state:{
+        user: [],
         loading: false,
         paginaion: false,
-        paginator: []
+        paginator: [],
+        flashMessage: {
+            message: '',
+            type: '',
+            bag: ''
+        },
+        flashMessageFlag: false,
     },
 
     mutations: {
@@ -24,6 +33,23 @@ export default new Vuex.Store ({
 
         set_user: (state, user) => {
             state.user = user
+        },
+
+        set_flashmessage(state, flashMessage) {
+            state.flashMessageFlag = true
+
+            state.flashMessage = flashMessage
+
+            setTimeout(() => {
+                state.flashMessageFlag = false
+            }, 3000)
+        },
+
+        set_paginator: (state, data) => {
+            if (data.per_page > data.total) {
+                state.paginaion = true
+                state.paginator = data
+            }
         }
     },
 
@@ -36,13 +62,21 @@ export default new Vuex.Store ({
             return state.user
         },
 
+        flashMessage: state => {
+            return state.flashMessage
+        },
+
+        flashMessageFlag: state => {
+            return state.flashMessageFlag
+        },
+
         pagination: state => {
             return state.paginaion
         },
 
         paginator: state => {
             return state.paginator
-        }
+        },
     },
 
     actions: {

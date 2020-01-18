@@ -1,6 +1,6 @@
 <template>
-    <modal name="category-edit" height="auto" :pivotY="0.2" @before-open="beforeOpen" :adaptive="true">
-        <div class="p-4 bg-main-dark">
+    <modal name="category-edit" height="auto" :pivotY="0.2" @before-open="beforeOpen" :adaptive="true" :clickToClose="false">
+        <div class="p-4 bg-main-dark text-white">
             <h1 class="text-lg py-2 border-b border-navbar">Update Category</h1>
 
             <div class="my-4">
@@ -34,6 +34,8 @@
 
 <script>
 export default {
+    name: 'category-edit',
+
     data() {
         return {
             category: {},
@@ -44,15 +46,12 @@ export default {
         beforeOpen (event) {
              this.category = event.params.category
         },
+
         saveChanges() {
-            axios.patch('/oath/categories/' + this.category.id, this.category )
-               .then( res => {
-                    this.$modal.hide('category-edit')
-                    Bus.$emit('flash-message', {text: 'Category Updated Successfully',type: 'success',});
-               })
-               .catch(error => {
-                   Bus.$emit('flash-message', {bag: error.response.data.errors,type: 'error',});
-               })
+            this.$store.dispatch('categories/updateCategory', this.category)
+                       .then( () => {
+                           this.$modal.hide('category-edit')
+                       })
         },
     }
 }

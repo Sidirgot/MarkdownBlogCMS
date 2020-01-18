@@ -1,5 +1,5 @@
 <template>
-    <div class="text-center mt-12" :key="loading" v-show="loading">
+    <div class="text-center mt-12" v-show="loading">
         <div class="loader"></div>
     </div>
 </template>

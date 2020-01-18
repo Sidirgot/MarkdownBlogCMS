@@ -4,8 +4,9 @@
             <a href="/">Sidirgot</a>
         </div>
 
-        <div class="mx-4">
+        <div class="mx-4 text-sm">
             <router-link :to="{name:'posts'}">Posts</router-link>
+            <router-link :to="{name:'categories'}">Categories</router-link>
             <router-link :to="{name:'subscribers'}">Subscribers</router-link>
             <router-link :to="{name:'settings'}">Settings</router-link>
         </div>

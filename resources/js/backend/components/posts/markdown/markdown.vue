@@ -26,9 +26,7 @@ export default {
         }
     },
 
-    components: {
-        MarkdownImage
-    },
+    components: { MarkdownImage },
 
     data() {
         return {

@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import Markdown from './markdown/markdown'
-import MarkdownImage from './markdown/markdownimage'
+import Markdown from '../markdown/markdown'
+import MarkdownImage from '../markdown/markdownimage'
 
 export default {
   components: {

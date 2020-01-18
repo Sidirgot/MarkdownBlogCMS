@@ -18,7 +18,6 @@ Route::middleware('auth:api')->group(function() {
                                                                       ->name('draft.posts');
     Route::patch('/action/{status}/{post}', 'Backend\Api\Posts\PostActionController@status')
                                                                       ->name('post.status');
-
     // Markdown Images
     Route::get('/post/markdown/images', 'Backend\Api\Markdown\MarkdownController@index')->name('markdown.images');
     Route::post('/post/markdown/upload', 'Backend\Api\Markdown\MarkdownController@upload')->name('markdown.upload');

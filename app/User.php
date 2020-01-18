@@ -69,12 +69,12 @@ class User extends Authenticatable
     }
 
     /**
-     * Query the database for all the ubpublished posts
+     * Get the users avatar image.
      *
      * @param $query
      */
-    public static function getAvatar()
+    public static function getAvatarAttribute($avatar)
     {
-        return self::whereId('1')->pluck('avatar')->toArray();
+        return '/'.$avatar;
     }
 }

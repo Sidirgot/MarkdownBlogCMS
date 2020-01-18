@@ -2,7 +2,9 @@
     <div>
         <topnav></topnav>
 
-        <router-view></router-view>
+        <div class="container mx-auto my-4">
+            <router-view></router-view>
+        </div>
 
         <flash-message></flash-message>
     </div>

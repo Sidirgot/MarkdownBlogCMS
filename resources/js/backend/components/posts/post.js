@@ -15,6 +15,10 @@ export default {
             state.post = post
         },
 
+        new_post(state, post) {
+            state.posts.unshift(post)
+        }
+
     },
 
     getters: {
@@ -25,34 +29,47 @@ export default {
         post: state => {
             return state.post
         },
-
-        findPost: (state) => (slug) => {
-            console.log(slug)
-            return state.posts.find(post => post.slug === slug)
-        }
     },
 
     actions: {
         fetchPosts(context, page_url) {
 
-            page_url = page_url || '/oath/posts'
+            page_url = page_url || '/api/posts'
 
             context.commit('set_loading', true, { root: true})
 
             axios.get(page_url)
                  .then(res => {
                     context.commit('set_posts', res.data.data)
+                    context.commit('set_paginator', res.data, { root: true })
                     context.commit('set_loading', false, { root: true})
                  })
         },
 
-        fetchPost() {
-            axios.get('/oath/posts/'+ this.id)
+        fetchPost(context, id) {
+            context.commit('set_loading', true, { root: true})
+
+            axios.get('/api/posts/'+ id)
                  .then( res => {
-                     this.post = res.data
-                     this.loaded = true
+                    context.commit('set_post', res.data)
+                    context.commit('set_loading', false, { root: true})
                  })
         },
+
+        createPost(context, post) {
+            return new Promise( (resolve, reject) => {
+                 axios.post('/api/posts', post)
+                      .then( ( response ) => {
+                            context.commit('new_post', response.data)
+                            Bus.$emit('flash-message',{text:'Post Created Succefully', type: 'success'})
+                            resolve(response)
+                        })
+                        .catch( (error) => {
+                            reject(error)
+                            Bus.$emit('flash-message', { text: error.response.data.message.errors, type: 'error' })
+                        })
+            })
+        }
 
         // changeStatus(status) {
         //     axios.patch(`/oath/post/actions/${status}/`+ this.post.id)

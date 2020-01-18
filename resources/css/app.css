@@ -65,7 +65,7 @@
 @tailwind utilities;
 
 body, html {
-  font-family: 'Lora', serif;
+  font-family: 'Arial';
 }
 
 .v--modal {

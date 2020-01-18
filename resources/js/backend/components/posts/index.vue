@@ -1,6 +1,12 @@
 <template>
-    <div class="container mx-auto">
-        <h1 class="text-xl text-white tracking-wider py-3">Posts</h1>
+    <div>
+        <div class="flex justify-between items-center pb-4">
+            <h1 class="text-xl text-white tracking-wider py-3">Posts</h1>
+
+            <router-link :to="{name: 'create-post'}" class="btn btn-indigo">
+                Create New Post<span class="span-icon bg-indigo-800 "><i class="fas fa-plus"></i></span>
+            </router-link>
+        </div>
 
         <loading></loading>
 
@@ -11,10 +17,10 @@
                     <th class="py-2">Actions</th>
                 </thead>
                 <tbody>
-                    <tr class="border-b border-main-dark" v-for="post in posts " :key="post.id">
+                    <tr class="border-b border-main-dark text-sm" v-for="post in posts " :key="post.id">
                         <td class="py-2" v-text="post.title"></td>
                         <td class="py-2">
-                            <router-link :to="{name: 'show-post', params:{slug: post.slug}}">
+                            <router-link :to="{name: 'show-post', params:{id: post.id}}">
                                 <i class="fas fa-eye"></i>
                             </router-link>
                         </td>
@@ -24,7 +30,7 @@
         </div>
 
         <div>
-            <paginator></paginator>
+            <paginator @fetchData="fetchPosts"></paginator>
         </div>
     </div>
 </template>
@@ -50,8 +56,8 @@ export default {
     },
 
     methods: {
-        fetchPosts() {
-            this.$store.dispatch('posts/fetchPosts')
+        fetchPosts(page_url) {
+            this.$store.dispatch('posts/fetchPosts', page_url)
         }
     }
 }

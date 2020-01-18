@@ -7,13 +7,15 @@
           <button class="btn btn-purple" @click="$modal.show('category-create')">Create Category
             <span class="span-icon bg-purple-800"><i class="fas fa-plus"></i></span>
           </button>
-          <button class="btn btn-indigo" @click.prevent="createPost">Create Post
+          <button class="btn btn-indigo" @click="createPost">Create Post
             <span class="span-icon bg-indigo-800"><i class="fas fa-check"></i></span>
           </button>
         </div>
       </div>
 
-      <div class="flex flex-wrap md:flex-no-wrap mx-2">
+      <loading></loading>
+
+      <div class="flex flex-wrap md:flex-no-wrap mx-2" v-show="! loading">
         <div class="w-full md:w-1/5 bg-main-dark rounded p-2">
 
           <div class="my-2">
@@ -44,13 +46,6 @@
             </select>
           </div>
 
-          <div class="my-2">
-            <label for="Author" class="block">Author</label>
-            <select id="Author" v-model="author" class="bg-navbar appearance-none p-2 rounded mb-3 mt-1 mx-1" required>
-              <option :value="user.id" v-for="user in users" :key="user.id" v-text="user.name"></option>
-            </select>
-          </div>
-
           <div>
             <label for="featured-image" class="border border-navbar p-2 cursor-pointer inline-block">
                 <i class="fas fa-cloud-upload-alt mr-2"></i>Featured Image
@@ -70,20 +65,23 @@
         </div>
 
       </div>
-      <CategoryCreate @refresh="fetchCategories" />
+      <CategoryCreate></CategoryCreate>
     </section>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Markdown from './markdown/markdown'
-import CategoryCreate from '../categories/create'
+import CategoryCreate from '../categories/modals/create'
+import loading from '../partials/loading'
 
 export default {
-    components: {Markdown, CategoryCreate},
+    name: 'create-post',
+
+    components: {Markdown, CategoryCreate, loading},
+
     data() {
         return {
-            categories: {},
-            users: {},
             title: '',
             body: '',
             slug: '',
@@ -98,26 +96,20 @@ export default {
     },
 
     created() {
-      this.fetchCategories()
-      this.fetchUsers()
+      this.$store.dispatch('categories/fetchCategories')
+    },
+
+    computed: {
+      ...mapGetters('categories', ['categories']),
+      ...mapGetters(['loading'])
     },
 
     methods: {
-      fetchCategories() {
-        axios.get('/oath/categories')
-            .then(res => {
-              this.categories = res.data
-            })
-      },
-      fetchUsers() {
-        axios.get('/oath/users')
-             .then( res => {
-               this.users = res.data
-             })
-      },
+
       bodyData(value) {
         this.body = value
       },
+
       onChange(e) {
 
         if(!e.target.files[0]) {
@@ -135,6 +127,7 @@ export default {
         }
 
       },
+
       createPost() {
         var data = new FormData()
 
@@ -149,14 +142,10 @@ export default {
           data.append('slug',this.slug)
         }
 
-        axios.post('/oath/posts',data)
-          .then(res => {
-            Bus.$emit('flash-message',{text:'Post Created Succefully', type: 'success'})
-            this.$router.push({name: 'show-post',params:{id: res.data.post.id}})
-          })
-          .catch(e => {
-            Bus.$emit('flash-message', { text: e.response.data.message.errors, type: 'error' })
-          })
+        this.$store.dispatch('posts/createPost', data).then( (response) => {
+          this.$router.push({name: 'show-post', params:{id: response.data.id}})
+        })
+
       }
     }
 }

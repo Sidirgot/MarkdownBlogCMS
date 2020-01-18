@@ -12,6 +12,5 @@ module.exports = {
                 'sidirgot-dark': '#009fa1',
             },
         },
-        inset: {}
     }
 }

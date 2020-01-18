@@ -1,7 +1,7 @@
 <template>
     <div class="flex items-center relative">
         <button class="mr-3 flex items-center hover:opacity-50 focus:outline-none p-2" @click="open = !open">
-            <img class="w-12 rounded-full mr-4 ml-5" :src="userAvatar">
+            <img class="w-12 rounded-full mr-4 ml-5" :src="this.user.avatar">
             {{ user.name }}
         </button>
 
@@ -15,7 +15,7 @@
             <i class="fas fa-sign-out-alt"></i>
         </button>
 
-        <UserEdit />
+        <UserEdit></UserEdit>
     </div>
 </template>
 
@@ -39,9 +39,6 @@ export default {
     },
 
     computed: {
-        userAvatar() {
-            return '/'+ this.user.avatar
-        },
         ...mapGetters(['user'])
     },
 

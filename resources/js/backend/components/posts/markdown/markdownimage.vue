@@ -49,9 +49,9 @@ export default {
     },
     methods: {
         getImages() {
-            axios.get('/oath/post/markdown/images')
-                 .then( res => {
-                     this.images = res.data
+            axios.get('/api/post/markdown/images')
+                 .then( (response) => {
+                     this.images = response.data
                      this.loading = true
                  })
         },
@@ -75,7 +75,7 @@ export default {
 
             this.loading = false
 
-            axios.post('/oath/post/markdown/upload', form)
+            axios.post('/api/post/markdown/upload', form)
                  .then( res => {
                      Bus.$emit('flash-message',{text:'Image Uploaded Successfully',type:'success'})
                      this.getImages()
@@ -93,7 +93,7 @@ export default {
             }
 
             this.loading = false
-            axios.post('/oath/post/markdown/image',{image: this.image})
+            axios.post('/api/post/markdown/image',{image: this.image})
                  .then( res => {
                      Bus.$emit('flash-message',{text:'Image Deleted Successfully',type:'success'})
                      this.getImages()

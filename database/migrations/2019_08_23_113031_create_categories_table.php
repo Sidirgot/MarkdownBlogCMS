@@ -17,7 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('icon')->nullable();
-            $table->string('color');
+            $table->string('color')->nullable();
             $table->timestamps();
         });
     }
