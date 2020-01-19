@@ -29,14 +29,14 @@ class UsersController extends Controller
      */
     public function update(UserRequest $request, User $user)
     {
-        $user->update($request->validated());
+        $request->updateProfile();
 
         return response()->json($user->fresh(), 201);
     }
 
     /**
-     * Deletes the user image from the disk
-     * And Resets the Users Avatar to the default
+     * Deletes the user image from the disk.
+     * And Resets the Users Avatar value to the default.
      *
      */
     public function resetAvatar(User $user)
@@ -45,6 +45,6 @@ class UsersController extends Controller
 
         $user->resetAvatar();
 
-        return response()->json(['reseted' => true]);
+        return response()->json($user->fresh(), 201);
     }
 }

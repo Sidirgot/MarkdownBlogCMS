@@ -14,13 +14,12 @@ class UsersTest extends TestCase
      /** @test */
      public function reset_profile_avatar_to_default()
      {
-         $this->admin();
+        $user =  $this->admin();
 
-         $user = factory(User::class)->create();
-         $user->avatar = 'assets/avatar.jpg';
+        $user->avatar = '/assets/avatar.jpg';
 
-         $user->resetAvatar();
+        $user->resetAvatar();
 
-         $this->assertEquals($user->fresh()->avatar, 'assets/user-avatar.jpg');
+        $this->assertEquals($user->fresh()->avatar, '/assets/user-avatar.jpg');
      }
 }

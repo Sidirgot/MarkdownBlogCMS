@@ -2,10 +2,13 @@
 
 namespace App\Http\Requests;
 
+use App\Traits\HandleImages;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserRequest extends FormRequest
 {
+    use HandleImages;
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -29,8 +32,37 @@ class UserRequest extends FormRequest
 
         return [
             'name' => 'sometimes|min:4',
-            'email' => 'sometimes|email|unique:users,email,'.$this->user->id,
+            'email' => 'sometimes|email',
             'password' => 'sometimes|min:5'
         ];
+    }
+
+    /**
+     * Update User Profile Information.
+     *
+     */
+    public function updateProfile()
+    {
+        $attributes = $this->validated();
+
+        if (array_key_exists('avatar', $attributes)) {
+            $attributes['avatar'] = $this->uploadProfileImage();
+        }
+
+        $this->user->update($attributes);
+    }
+
+    /**
+     * Handle the image upload process.
+     *
+     * @return string
+     */
+    protected function uploadProfileImage()
+    {
+        if ($this->user->avatar === '/assets/user-avatar.jpg') {
+            return $this->uploadImage($this->avatar, true);
+        } else if ($this->user->avatar != '/assets/user-avatar.jpg' ) {
+            return $this->updateImage($this->user->avatar, $this->avatar, true);
+        }
     }
 }

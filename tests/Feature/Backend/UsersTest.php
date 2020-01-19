@@ -24,11 +24,9 @@ class UsersTest extends TestCase
     }
 
     /** @test */
-    public function a_users_data_can_be_updated()
+    public function users_profile_can_be_updated()
     {
-        $this->admin();
-
-        $user = factory(User::class)->create();
+        $user = $this->admin();
 
         $data = [
             'name' => 'johndoe',
@@ -45,75 +43,63 @@ class UsersTest extends TestCase
     /** @test */
     public function user_has_a_profile_avatar()
     {
-        $this->admin();
-
-        $user = factory(User::class)->create();
+        $user = $this->admin();
 
         Storage::fake('public_uploads');
 
-        $data = ['avatar' => UploadedFile::fake()->image('avatar.jpg')];
+        $data = [ 'avatar' => UploadedFile::fake()->image('avatar.jpg') ];
 
-        $this->json('patch', route('user.update', $user), $data);
+        $response = $this->json('patch', route('user.update', $user), $data)->decodeResponseJson();
 
         Storage::disk('public_uploads')->assertExists('assets/'. $data['avatar']->getClientOriginalname());
 
-        $this->assertNotEquals($user->fresh()->avatar, 'assets/user-avatar.jpg');
-        $this->assertEquals($user->fresh()->avatar, 'assets/' . $data['avatar']->getClientOriginalName());
+        $this->assertNotEquals($response['avatar'], 'assets/user-avatar.jpg');
+        $this->assertEquals($response['avatar'], '/assets/' . $data['avatar']->getClientOriginalName());
     }
 
-     /** @test */
-     public function a_user_can_update_his_profile_avatar()
-     {
-        $this->admin();
-
-        $user = factory(User::class)->create();
+    /** @test */
+    public function a_user_can_update_his_profile_avatar()
+    {
+        $user = $this->admin();
 
         Storage::fake('public_uploads');
 
-        $data = [
-            'avatar' => UploadedFile::fake()->image('avatar.jpg'),
-        ];
+        $image = [ 'avatar' => UploadedFile::fake()->image('avatar.jpg') ];
 
-        $this->json('patch', route('user.update', $user), $data);
+        $response = $this->json('patch', route('user.update', $user), $image)->decodeResponseJson();
 
-        Storage::disk('public_uploads')->assertExists('assets/'. $data['avatar']->getClientOriginalname());
+        Storage::disk('public_uploads')->assertExists('assets/'. $image['avatar']->getClientOriginalname());
 
-        $this->assertNotEquals($user->fresh()->avatar, 'assets/user-avatar.jpg');
-        $this->assertEquals($user->fresh()->avatar, 'assets/' . $data['avatar']->getClientOriginalName());
+        $this->assertNotEquals($response['avatar'], 'assets/user-avatar.jpg');
+        $this->assertEquals($response['avatar'], '/assets/' . $image['avatar']->getClientOriginalName());
 
-        $newData = [
-            'avatar' => UploadedFile::fake()->image('newAvatar.jpg'),
-        ];
+        $newImage = [ 'avatar' => UploadedFile::fake()->image('newAvatar.jpg') ];
 
-        $this->json('patch', route('user.update', $user->fresh()), $newData);
+        $this->json('patch', route('user.update', $user->fresh()), $newImage);
 
-        Storage::disk('public_uploads')->assertExists('assets/'. $newData['avatar']->getClientOriginalname());
-        Storage::disk('public_uploads')->assertMissing('assets/'. $data['avatar']->getClientOriginalname());
-     }
+        Storage::disk('public_uploads')->assertExists('assets/'. $newImage['avatar']->getClientOriginalname());
+        Storage::disk('public_uploads')->assertMissing('assets/'. $image['avatar']->getClientOriginalname());
+    }
 
-      /** @test */
-      public function a_user_can_delete_his_profile_avatar()
-      {
-         $this->admin();
+    /** @test */
+    public function a_user_can_delete_his_profile_avatar()
+    {
+        $user = $this->admin();
 
-         $user = factory(User::class)->create();
+        Storage::fake('public_uploads');
 
-         Storage::fake('public_uploads');
+        $image = [ 'avatar' => UploadedFile::fake()->image('avatar.jpg') ];
 
-         $data = [
-             'avatar' => UploadedFile::fake()->image('avatar.jpg'),
-         ];
+        $response = $this->json('patch', route('user.update', $user), $image)->decodeResponseJson();
 
-         $this->json('patch', route('user.update', $user), $data);
+        Storage::disk('public_uploads')->assertExists('assets/'. $image['avatar']->getClientOriginalname());
 
-         Storage::disk('public_uploads')->assertExists('assets/'. $data['avatar']->getClientOriginalname());
+        $this->assertNotEquals($response['avatar'], 'assets/user-avatar.jpg');
+        $this->assertEquals($response['avatar'], '/assets/' . $image['avatar']->getClientOriginalName());
 
-         $this->assertNotEquals($user->fresh()->avatar, 'assets/user-avatar.jpg');
-         $this->assertEquals($user->fresh()->avatar, 'assets/' . $data['avatar']->getClientOriginalName());
+        $response2 = $this->json('patch', route('reset.avatar', $user))->decodeResponseJson();
 
-         $this->json('patch', route('reset.avatar', $user));
-
-         Storage::disk('public_uploads')->assertMissing('assets/'. $data['avatar']->getClientOriginalname());
-         $this->assertEquals($user->fresh()->avatar, 'assets/user-avatar.jpg');
-      }
+        Storage::disk('public_uploads')->assertMissing('assets/'. $image['avatar']->getClientOriginalname());
+        $this->assertEquals($response2['avatar'], '/assets/user-avatar.jpg');
+    }
 }

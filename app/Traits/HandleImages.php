@@ -30,7 +30,7 @@ trait HandleImages
      * @param \Illuminate\Http\UploadedFile $image
      */
     public function uploadImage($image, $profile = false)
-    {   //dd($profile);
+    {
         return $image->storeAs($profile ? 'assets' : $this->folder_name, $image->getClientOriginalName(), $this->disk);
     }
 
