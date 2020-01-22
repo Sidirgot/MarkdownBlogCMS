@@ -22,7 +22,7 @@
             <div class="flex flex-wrap" v-if="loading">
 
                 <div class="w-1/3" v-for="image in images" :key="image.id">
-                    <img :src="'/'+ image.image" class="my-2 w-full h-32 hover:opacity-50 cursor-pointer" @click="selectImage(image)">
+                    <img :src="image.image" class="my-2 w-full h-32 hover:opacity-50 cursor-pointer" @click="selectImage(image)">
                 </div>
             </div>
         </div>

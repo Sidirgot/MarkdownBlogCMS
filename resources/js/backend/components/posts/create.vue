@@ -1,7 +1,15 @@
 <template>
     <section class="my-2 text-white">
-      <div class="flex justify-between items-center mx-2">
-        <h3 class="my-3 text-xl">Create New Post</h3>
+      <div class="flex flex-wrap justify-between items-center mx-2 mb-12">
+        <div class="flex flex-wrap items-center justify-between my-4">
+          <h3 class="my-3 mr-6 text-xl">Create New Post</h3>
+
+          <router-link :to="{name: 'posts'}" class="btn btn-purple">
+            <i class="fas fa-undo"></i>
+            Back
+          </router-link>
+        </div>
+
 
         <div>
           <button class="btn btn-purple" @click="$modal.show('category-create')">Create Category

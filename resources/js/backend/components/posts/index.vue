@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="flex justify-between items-center pb-4">
+    <div class="mx-4">
+        <div class="flex justify-between items-center mb-4">
             <h1 class="text-xl text-white tracking-wider py-3">Posts</h1>
 
             <router-link :to="{name: 'create-post'}" class="btn btn-indigo">
@@ -29,9 +29,7 @@
             </table>
         </div>
 
-        <div>
-            <paginator @fetchData="fetchPosts"></paginator>
-        </div>
+        <paginator @fetchData="fetchPosts" v-show="! loading"></paginator>
     </div>
 </template>
 

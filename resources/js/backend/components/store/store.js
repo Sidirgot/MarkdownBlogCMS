@@ -5,18 +5,20 @@ Vue.use(Vuex)
 
 import categories from '../categories/categories'
 import posts from '../posts/post'
+import subscribers from '../subscribers/subscribers'
 
 
 export default new Vuex.Store ({
     modules: {
         categories,
         posts,
+        subscribers
     },
 
     state:{
         user: [],
         loading: false,
-        paginaion: false,
+        pagination: false,
         paginator: [],
         flashMessage: {
             message: '',
@@ -35,6 +37,10 @@ export default new Vuex.Store ({
             state.user = user
         },
 
+        reset_auth_user:(state) => {
+            state.user = []
+        },
+
         set_flashmessage(state, flashMessage) {
             state.flashMessageFlag = true
 
@@ -46,8 +52,12 @@ export default new Vuex.Store ({
         },
 
         set_paginator: (state, data) => {
-            if (data.per_page > data.total) {
-                state.paginaion = true
+
+            state.pagination = false
+            state.paginator = []
+
+            if (data.per_page < data.total) {
+                state.pagination = true
                 state.paginator = data
             }
         }
@@ -71,7 +81,7 @@ export default new Vuex.Store ({
         },
 
         pagination: state => {
-            return state.paginaion
+            return state.pagination
         },
 
         paginator: state => {
@@ -86,5 +96,13 @@ export default new Vuex.Store ({
                      context.commit('set_user', res.data)
                  })
         },
+
+        logout(context) {
+            axios.post('/logout')
+                 .then( () => {
+                     context.commit('reset_auth_user')
+                     location.reload()
+                 })
+        }
     }
 })

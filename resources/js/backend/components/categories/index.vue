@@ -1,7 +1,7 @@
 <template>
-        <div class="container mx-auto my-4">
+        <div class="mx-4">
 
-            <div class="flex justify-between items-center mx-2">
+            <div class="flex justify-between items-center mx-2 mb-4">
                 <h1 class="text-xl tracking-wider my-2 text-white">Categories ( {{ categories.length }} )</h1>
 
                 <button class="btn btn-indigo" @click="$modal.show('category-create')">
@@ -15,7 +15,6 @@
                 <table class="table-auto w-full text-center">
 
                     <thead class="bg-main-dark rounded">
-                        <th class="p-2">ID</th>
                         <th>Name</th>
                         <th>Color</th>
                         <th>Icon</th>
@@ -24,7 +23,6 @@
 
                     <transition-group name="fade" tag="tbody">
                         <tr class="border-b border-main-dark" v-for="( category, index ) in categories" :key="category.id">
-                            <td class="p-2">{{ category.id }}</td>
                             <td>{{ category.name }} ( {{ category.post_count }} )</td>
                             <td>
                                 <span class="px-2 rounded-full" :style="{'background-color': category.color}"></span>

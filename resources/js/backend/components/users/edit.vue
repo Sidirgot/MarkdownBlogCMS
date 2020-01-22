@@ -5,7 +5,7 @@
 
             <div class="flex my-2">
                 <button class="btn btn-indigo mx-2" @click="panel = '1'">Profile Details</button>
-                <button class="btn btn-indigo mx-2" @click="panel = '2'">Profile Avatar</button>  
+                <button class="btn btn-indigo mx-2" @click="panel = '2'">Profile Avatar</button>
             </div>
 
             <div v-show="panel === '1'">
@@ -29,11 +29,11 @@
                     <button class="flex-1 btn btn-indigo mx-4" @click="saveChanges">Update</button>
                 </div>
             </div>
-        
+
             <div v-show="panel === '2'">
-                <profileAvatar :user="user" /> 
+                <profileAvatar :user="user" />
             </div>
-           
+
         </div>
     </modal>
 </template>
@@ -43,7 +43,7 @@ import profileAvatar from './settings/profileAvatar'
 
 export default {
     components: {profileAvatar},
-    
+
     data() {
         return {
             user: {},
@@ -64,12 +64,12 @@ export default {
                     this.$modal.hide('user-edit')
                     Bus.$emit('flash-message', {text: 'User Updated Successfully',type: 'success',});
                     Bus.$emit('refresh-user-info')
-                    
+
                })
                .catch(error => {
                    Bus.$emit('flash-message',{bag: error.response.data.errors, type: 'error'})
                })
-        },  
+        },
     }
 }
 </script>

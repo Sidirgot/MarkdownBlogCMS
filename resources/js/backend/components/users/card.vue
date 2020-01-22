@@ -1,7 +1,7 @@
 <template>
     <div class="flex items-center relative">
-        <button class="mr-3 flex items-center hover:opacity-50 focus:outline-none p-2" @click="open = !open">
-            <img class="w-12 rounded-full mr-4 ml-5" :src="this.user.avatar">
+        <button class="mr-3 flex items-center hover:opacity-50 focus:outline-none" @click="open = !open">
+            <img class="w-12 rounded-full mr-4 ml-0 md:ml-5" :src="this.user.avatar">
             {{ user.name }}
         </button>
 
@@ -11,7 +11,7 @@
             </div>
         </transition>
 
-        <button class="bg-main-dark p-5  outline-none" @click="logout">
+        <button class="bg-main-dark p-5 focus:outline-none hover:opacity-50" @click="logout">
             <i class="fas fa-sign-out-alt"></i>
         </button>
 
@@ -46,10 +46,8 @@ export default {
         fetchUser() {
             this.$store.dispatch('fetchUser')
         },
-
         logout() {
-            // axios.post('/logout')
-            //      .then( res => location.reload())
+            this.$store.dispatch('logout')
         }
     }
 
@@ -69,6 +67,7 @@ export default {
 
 .dropdown-enter,
 .dropdown-leave-to {
+    top:2em;
     opacity: 0;
 }
 </style>

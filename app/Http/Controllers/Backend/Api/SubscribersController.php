@@ -14,7 +14,7 @@ class SubscribersController extends Controller
      */
     public function index()
     {
-        return Subscriber::latest()->paginate(10);
+        return Subscriber::latest()->paginate(20);
     }
 
     /**
@@ -25,6 +25,6 @@ class SubscribersController extends Controller
      */
     public function show(Subscriber $subscriber)
     {
-        return $subscriber;
+        return response()->json($subscriber, 200);
     }
 }

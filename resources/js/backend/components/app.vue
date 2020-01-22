@@ -2,7 +2,7 @@
     <div>
         <topnav></topnav>
 
-        <div class="container mx-auto my-4">
+        <div class="container mx-auto mt-4 mb-8">
             <router-view></router-view>
         </div>
 

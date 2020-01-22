@@ -1,57 +1,51 @@
 <template>
-    <div class="container mx-auto my-4">
+    <div class="mx-4">
+        <h1 class="text-xl tracking-wider my-4 text-white">Subscribers</h1>
 
-        <div class="bg-navbar shadow rounded mx-2 md:mx-0 text-white p-4">
+        <loading></loading>
 
-            <h3 class="text-xl py-2">Subscribers Table</h3>
+        <div class="bg-navbar shadow rounded text-white text-sm p-4" v-show="! loading">
 
             <table class="table-auto w-full overflow-auto">
                 <thead class="bg-main-dark">
-                    <th class="py-4">ID</th>
-                    <th class="py-4">Email</th>
-                    <th class="py-4">Subcription Date</th>
+                    <th class="py-2">Email</th>
+                    <th class="py-2">Subcription Date</th>
                 </thead>
 
                 <tr class="text-center border-b border-main-dark" v-for="subscriber in subscribers" :key="subscriber.id">
-                    <td class="py-4">{{ subscriber.id }}</td>
-                    <td class="py-4">{{ subscriber.email }}</td>
-                    <td class="py-4">{{ subscriber.created_at }}</td>
+                    <td class="py-2">{{ subscriber.email }}</td>
+                    <td class="py-2">{{ subscriber.created_at }}</td>
                 </tr>
-            </table>  
+            </table>
         </div>
-        
+
+        <paginator @fetchData="fetchSubscribers" v-show="! loading"></paginator>
+
     </div>
 </template>
 
 <script>
-import Paginator from '../partials/paginator'
+import { mapGetters } from 'vuex'
+import paginator from '../partials/paginator'
+import loading from '../partials/loading'
 
 export default {
-    components: {Paginator},
+    name: 'subscribers',
 
-    data() {
-        return {
-            subscribers: {},
-            paginationData: {}
-        }
+    components: { paginator, loading},
+
+    computed: {
+        ...mapGetters('subscribers', ['subscribers']),
+        ...mapGetters(['loading'])
     },
+
     created() {
         this.fetchSubscribers()
     },
-    methods: {
-        
-        fetchSubscribers(page_url) {
 
-            page_url = page_url || '/oath/subscribers'
-            
-            axios.get(page_url)
-                .then(res => {
-                    this.subscribers = res.data.data
-                    this.paginationData = res.data
-                })
-        },
-        refresh() {
-            this.fetchSubscribers()
+    methods: {
+        fetchSubscribers(page_url) {
+            this.$store.dispatch('subscribers/fetchSubscribers', page_url)
         }
     }
 }

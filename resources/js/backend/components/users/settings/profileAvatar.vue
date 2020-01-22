@@ -2,14 +2,14 @@
      <div class="my-2 flex items-center justify-between">
         <div class="flex items-center ">
             <figure>
-                <img class="w-20 rounded-full mr-4 ml-5" :src="'/'+ user.avatar" v-show="!avatar" alt="Avatar of Jonathan Reinink">
+                <img class="w-20 rounded-full mr-4 ml-5" :src="user.avatar" v-show="!avatar" alt="Avatar of Jonathan Reinink">
                 <img class="w-20 rounded-full mr-4 ml-5" :src="avatar" v-show="avatar" alt="Avatar of Jonathan Reinink">
             </figure>
 
             <label for="user_avatar" class="border border-main-dark p-2 cursor-pointer inline-block">
                 <span class="btn btn-indigo"><i class="fas fa-cloud-upload-alt"></i></span>
             </label>
-            <input id="user_avatar" type="file" accept="image/*" @change="onChange" class="hidden">   
+            <input id="user_avatar" type="file" accept="image/*" @change="onChange" class="hidden">
 
             <button class="btn btn-blue" v-show="avatarFile" @click="saveAvatar">Save</button>
         </div>
@@ -60,7 +60,7 @@ export default {
 
             data.append('avatar', this.avatarFile)
             data.append('_method', 'patch')
-            
+
             axios.post('/oath/users/'+ this.user.id, data)
                  .then( res => {
                    this.$modal.hide('user-edit')
