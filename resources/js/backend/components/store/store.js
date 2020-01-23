@@ -29,15 +29,15 @@ export default new Vuex.Store ({
     },
 
     mutations: {
-        set_loading: (state, status) => {
+        set_loading(state, status){
             state.loading = status
         },
 
-        set_user: (state, user) => {
+        set_user(state, user){
             state.user = user
         },
 
-        reset_auth_user:(state) => {
+        reset_auth_user(state){
             state.user = []
         },
 
@@ -51,7 +51,7 @@ export default new Vuex.Store ({
             }, 3000)
         },
 
-        set_paginator: (state, data) => {
+        set_paginator(state, data) {
 
             state.pagination = false
             state.paginator = []

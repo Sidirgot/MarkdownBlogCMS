@@ -20,6 +20,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+
 export default {
     computed: {
         ...mapGetters(['flashMessage', 'flashMessageFlag'])
@@ -29,6 +30,14 @@ export default {
 
 
 <style scoped>
+.bottom-0 {
+    bottom: 0;
+}
+
+.right-0 {
+    right: 0;
+}
+
 .slide-enter-active, .slide-leave-active {
   transition: all .5s;
 }

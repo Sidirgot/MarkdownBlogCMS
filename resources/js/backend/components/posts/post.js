@@ -58,26 +58,29 @@ export default {
 
         createPost(context, post) {
             return new Promise( (resolve, reject) => {
+                context.commit('set_loading', true, { root: true})
                  axios.post('/api/posts', post)
                       .then( ( response ) => {
                             context.commit('new_post', response.data)
-                            Bus.$emit('flash-message',{text:'Post Created Succefully', type: 'success'})
                             resolve(response)
+                            context.commit('set_loading', false, { root: true})
+                            context.commit('set_flashmessage',{message: 'Project Created Successfully', type: 'success'}, {root: true})
                         })
                         .catch( (error) => {
                             reject(error)
-                            Bus.$emit('flash-message', { text: error.response.data.message.errors, type: 'error' })
+                            context.commit('set_flashmessage', { bag: error.response.data.errors, type: 'error' }, {root: true})
+                            context.commit('set_loading', false, { root: true})
                         })
             })
         },
 
-        // changeStatus(status) {
-        //     axios.patch(`/oath/post/actions/${status}/`+ this.post.id)
-        //         .then(res => {
-        //             this.fetchPost()
-        //             Bus.$emit('flash-message',{text: 'Post Status Updated', type: 'success'})
-        //         })
-        // },
+        changeStatus(context, {post, status}) {
+            axios.patch(`/api/action/${status}/${post.id}`)
+                 .then( (response) => {
+                     context.commit('set_post', response.data)
+                     context.commit('set_flashmessage',{message: `Project ${status} Successfully`, type: 'success'}, {root: true})
+                 })
+        },
 
         filterPosts(context, term) {
             context.commit('set_loading', true, { root: true})

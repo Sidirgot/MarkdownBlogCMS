@@ -54,15 +54,7 @@
             </select>
           </div>
 
-          <div>
-            <label for="featured-image" class="border border-navbar p-2 cursor-pointer inline-block">
-                <i class="fas fa-cloud-upload-alt mr-2"></i>Featured Image
-            </label>
-              <input id="featured-image" type="file" accept="image/*" @change="onChange" class="hidden" required>
-            <figure>
-              <img :src="featured_image" class="my-2">
-            </figure>
-          </div>
+         <featuredImage @postImage="postImage"></featuredImage>
 
         </div>
 
@@ -82,11 +74,12 @@ import { mapGetters } from 'vuex'
 import Markdown from './markdown/markdown'
 import CategoryCreate from '../categories/modals/create'
 import loading from '../partials/loading'
+import featuredImage from './helpers/featuredImage'
 
 export default {
     name: 'create-post',
 
-    components: {Markdown, CategoryCreate, loading},
+    components: {Markdown, CategoryCreate, loading, featuredImage},
 
     data() {
         return {
@@ -96,7 +89,6 @@ export default {
             status: '0',
             category_id: 1,
             author: '1',
-            featured_image: '',
             watching: '',
             image: '',
             slugstatus: false,
@@ -118,22 +110,8 @@ export default {
         this.body = value
       },
 
-      onChange(e) {
-
-        if(!e.target.files[0]) {
-          return this.featured_image = ''
-        }
-
-        this.image = e.target.files[0]
-
-        let reader =  new FileReader
-
-        reader.readAsDataURL(e.target.files[0])
-
-        reader.onload = e => {
-          this.featured_image = e.target.result
-        }
-
+      postImage(image) {
+        this.image = image
       },
 
       createPost() {

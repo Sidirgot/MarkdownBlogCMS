@@ -30,8 +30,8 @@ class PostRequest extends FormRequest
     protected function createRules()
     {
         return [
-                'title' => 'required|string',
-                'slug' =>  'sometimes|string',
+                'title' => 'required|string|unique:posts',
+                'slug' =>  'sometimes|string|unique:posts',
                 'content' => 'required',
                 'status' => 'sometimes|boolean',
                 'image' => 'required|file|image|max:5000',
@@ -48,8 +48,8 @@ class PostRequest extends FormRequest
     protected function updateRules()
     {
         return [
-            'title' => 'sometimes|string',
-            'slug' =>  'sometimes|string',
+            'title' => 'sometimes|string|unique:posts,title,'. $this->post->id,
+            'slug' =>  'sometimes|string|unique:posts,slug,'. $this->post->slug,
             'content' => 'sometimes',
             'status' => 'sometimes|boolean',
             'image' => 'sometimes|string',

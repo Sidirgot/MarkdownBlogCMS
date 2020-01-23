@@ -2,7 +2,7 @@
     <header class=" flex justify-between items-center bg-navbar shadow-lg text-white relative">
 
         <!-- Desktop Version -->
-        <div class="hidden md:flex items-center w-full">
+        <div class="hidden md:flex items-center">
             <div class="ml-2 text-lg uppercase">
                 <a href="/">Sidirgot</a>
             </div>

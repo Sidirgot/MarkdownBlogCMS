@@ -14,6 +14,6 @@ module.exports = {
         },
         inset: {
             '4': '4em',
-        }
+        },
     }
 }

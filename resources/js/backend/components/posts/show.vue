@@ -79,7 +79,9 @@ export default {
 
     methods: {
         changeStatus(status) {
+            var payload = {post: this.post, status: status}
 
+            this.$store.dispatch('posts/changeStatus', payload)
         },
     },
 }

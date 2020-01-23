@@ -38,6 +38,6 @@ class PostActionController extends Controller
     {
         $status == "publish" ? $post->publish() : $post->unpublish();
 
-        return response()->json($post, 200);
+        return response()->json($post->load('category'), 200);
     }
 }

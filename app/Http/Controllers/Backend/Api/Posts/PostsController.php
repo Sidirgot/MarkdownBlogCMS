@@ -32,7 +32,7 @@ class PostsController extends Controller
     {
         $post = auth()->user()->post()->create($request->validated());
 
-        return response()->json($post, 201);
+        return response()->json($post->load('category'), 201);
     }
 
     /**
