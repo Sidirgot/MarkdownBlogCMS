@@ -12342,21 +12342,22 @@ var render = function() {
       _c(
         "div",
         {
-          staticClass: "flex flex-wrap justify-between items-center mx-2 mb-12"
+          staticClass:
+            "flex flex-wrap justify-between items-center mx-2 md:mb-12"
         },
         [
           _c(
             "div",
-            { staticClass: "flex flex-wrap items-center justify-between my-4" },
+            { staticClass: "flex flex-wrap items-center justify-between" },
             [
-              _c("h3", { staticClass: "my-3 mr-6 text-xl" }, [
+              _c("h3", { staticClass: "mr-6 text-lg" }, [
                 _vm._v("Create New Post")
               ]),
               _vm._v(" "),
               _c(
                 "router-link",
                 {
-                  staticClass: "btn btn-purple",
+                  staticClass: "btn btn-blue",
                   attrs: { to: { name: "posts" } }
                 },
                 [
@@ -12368,7 +12369,7 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _c("div", [
+          _c("div", { staticClass: "my-4 md:my-0" }, [
             _c(
               "button",
               {
