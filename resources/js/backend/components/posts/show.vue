@@ -24,7 +24,7 @@
 
                     <div class="flex justify-between items-center">
                         <div>
-                            <button @click="$modal.show('social-destroy',{post})" class="btn btn-red">
+                            <button @click="$modal.show('post-destroy',{post})" class="btn btn-red">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>

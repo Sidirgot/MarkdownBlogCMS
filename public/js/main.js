@@ -7400,6 +7400,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
+  name: 'post-destroy',
   data: function data() {
     return {
       post: {}
@@ -7407,19 +7408,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     deletePost: function deletePost() {
-      var _this = this;
-
-      axios["delete"]('/oath/posts/' + this.post.id).then(function (res) {
-        Bus.$emit('flash-message', {
-          text: 'Post Deleted Successfully',
-          type: 'success'
-        });
-
-        _this.$emit('refresh');
-
-        _this.$modal.hide('social-destroy');
-
-        _this.$router.go(_this.$router.currentRoute);
+      this.$store.dispatch('posts/deletePost', this.post);
+      this.$modal.hide('post-destroy');
+      this.$router.push({
+        name: 'posts'
       });
     },
     loadPost: function loadPost(e) {
@@ -13166,7 +13158,7 @@ var render = function() {
     "modal",
     {
       attrs: {
-        name: "social-destroy",
+        name: "post-destroy",
         height: "auto",
         pivotY: 0.2,
         adaptive: true
@@ -13195,7 +13187,7 @@ var render = function() {
               staticClass: "flex-1 btn btn-blue mx-4",
               on: {
                 click: function($event) {
-                  return _vm.$modal.hide("social-destroy")
+                  return _vm.$modal.hide("post-destroy")
                 }
               }
             },
@@ -13588,7 +13580,7 @@ var render = function() {
                           staticClass: "btn btn-red",
                           on: {
                             click: function($event) {
-                              return _vm.$modal.show("social-destroy", {
+                              return _vm.$modal.show("post-destroy", {
                                 post: _vm.post
                               })
                             }
@@ -31799,6 +31791,18 @@ __webpack_require__.r(__webpack_exports__);
     },
     new_post: function new_post(state, post) {
       state.posts.unshift(post);
+    },
+    update_post: function update_post(state, post) {
+      var index = state.posts.findIndex(function (postItem) {
+        return postItem.id === post.id;
+      });
+      state.posts.splice(index, 1, post);
+    },
+    detele_post: function detele_post(state, post) {
+      var index = state.posts.findIndex(function (postItem) {
+        return postItem.id === post.id;
+      });
+      state.posts.splice(index, 1);
     }
   },
   getters: {
@@ -31864,6 +31868,23 @@ __webpack_require__.r(__webpack_exports__);
           context.commit('set_loading', false, {
             root: true
           });
+        });
+      });
+    },
+    deletePost: function deletePost(context, post) {
+      context.commit('set_loading', true, {
+        root: true
+      });
+      axios["delete"]("/api/posts/".concat(post.id)).then(function (response) {
+        context.commit('delete_post', post);
+        context.commit('set_loading', false, {
+          root: true
+        });
+        context.commit('set_flashmessage', {
+          message: 'Project Deleted Successfully',
+          type: 'success'
+        }, {
+          root: true
         });
       });
     },

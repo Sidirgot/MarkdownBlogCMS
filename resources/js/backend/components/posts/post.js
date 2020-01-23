@@ -19,6 +19,16 @@ export default {
             state.posts.unshift(post)
         },
 
+        update_post(state, post) {
+            var index = state.posts.findIndex( (postItem) => postItem.id === post.id)
+            state.posts.splice(index, 1, post)
+        },
+
+        detele_post(state, post) {
+            var index = state.posts.findIndex( (postItem) => postItem.id === post.id)
+            state.posts.splice(index, 1)
+        }
+
     },
 
     getters: {
@@ -72,6 +82,16 @@ export default {
                             context.commit('set_loading', false, { root: true})
                         })
             })
+        },
+
+        deletePost(context, post) {
+                context.commit('set_loading', true, { root: true})
+                axios.delete(`/api/posts/${post.id}`)
+                    .then( (response) => {
+                        context.commit('delete_post', post)
+                        context.commit('set_loading', false, { root: true})
+                        context.commit('set_flashmessage', {message: 'Project Deleted Successfully', type: 'success'}, {root: true})
+                    })
         },
 
         changeStatus(context, {post, status}) {
