@@ -17,7 +17,7 @@ export default {
 
         new_post(state, post) {
             state.posts.unshift(post)
-        }
+        },
 
     },
 
@@ -39,9 +39,9 @@ export default {
             context.commit('set_loading', true, { root: true})
 
             axios.get(page_url)
-                 .then(res => {
-                    context.commit('set_posts', res.data.data)
-                    context.commit('set_paginator', res.data, { root: true })
+                 .then(response => {
+                    context.commit('set_posts', response.data.data)
+                    context.commit('set_paginator', response.data, { root: true })
                     context.commit('set_loading', false, { root: true})
                  })
         },
@@ -50,8 +50,8 @@ export default {
             context.commit('set_loading', true, { root: true})
 
             axios.get('/api/posts/'+ id)
-                 .then( res => {
-                    context.commit('set_post', res.data)
+                 .then( response => {
+                    context.commit('set_post', response.data)
                     context.commit('set_loading', false, { root: true})
                  })
         },
@@ -69,7 +69,7 @@ export default {
                             Bus.$emit('flash-message', { text: error.response.data.message.errors, type: 'error' })
                         })
             })
-        }
+        },
 
         // changeStatus(status) {
         //     axios.patch(`/oath/post/actions/${status}/`+ this.post.id)
@@ -77,6 +77,16 @@ export default {
         //             this.fetchPost()
         //             Bus.$emit('flash-message',{text: 'Post Status Updated', type: 'success'})
         //         })
-        // }
+        // },
+
+        filterPosts(context, term) {
+            context.commit('set_loading', true, { root: true})
+            axios.get(`/api/search/${term}`)
+                 .then( (response) => {
+                     context.commit('set_posts', response.data.data)
+                     context.commit('set_paginator', response.data, { root: true })
+                     context.commit('set_loading', false, { root: true})
+                 })
+        }
     }
 }

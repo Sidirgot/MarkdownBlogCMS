@@ -15,7 +15,7 @@ class SearchController extends Controller
      */
     public function search($term)
     {
-        $results =  Post::searchTitleAndSlug($term);
+        $results =  Post::searchTitleAndSlug($term)->paginate(20);
 
         return response()->json($results, 200);
     }

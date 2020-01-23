@@ -83,8 +83,7 @@ class Post extends Model
     public static function searchTitleAndSlug(string $term)
     {
         return self::where('title', 'LIKE', "%{$term}%")
-                    ->orWhere('slug', 'LIKE', "%{$term}%")
-                    ->paginate(20);
+                    ->orWhere('slug', 'LIKE', "%{$term}%");
     }
 
     /**

@@ -1,13 +1,13 @@
 <template>
-    <header class=" flex justify-between items-center bg-navbar shadow-lg text-white h-16 relative">
+    <header class=" flex justify-between items-center bg-navbar shadow-lg text-white relative">
 
         <!-- Desktop Version -->
-        <div class="hidden md:flex justify-between items-center">
+        <div class="hidden md:flex items-center w-full">
             <div class="ml-2 text-lg uppercase">
                 <a href="/">Sidirgot</a>
             </div>
 
-            <div class="mx-4 text-sm">
+            <div class="ml-20 text-sm">
                 <router-link :to="{name:'posts'}" class="px-2 hover:opacity-50">
                     <i class="fas fa-clipboard text-lg"></i>
                     Posts
@@ -38,7 +38,7 @@
 
         <!-- Mobile Version -->
         <transition name="dropdown">
-            <div class="absolute md:hidden top-4 w-full text-white bg-navbar p-4 shadow-lg" v-show="isOpen">
+            <div class="absolute md:hidden top-4 w-full text-white bg-navbar p-4 shadow-lg z-50" v-show="isOpen">
                 <div class="flex flex-col">
                     <router-link :to="{name:'posts'}" @click.native="isOpen = false" class="border-b border-dashed border-white py-2 hover:opacity-50">
                         <i class="fas fa-clipboard text-lg"></i>

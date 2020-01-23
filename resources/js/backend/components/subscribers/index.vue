@@ -1,10 +1,11 @@
 <template>
     <div class="mx-4">
-        <h1 class="text-xl tracking-wider my-4 text-white">Subscribers</h1>
 
         <loading></loading>
 
-        <div class="bg-navbar shadow rounded text-white text-sm p-4" v-show="! loading">
+        <div class="bg-navbar shadow rounded text-white text-sm px-4 pb-6" v-show="! loading">
+
+            <h1 class="text-lg text-white tracking-wider py-4">Subscribers Table</h1>
 
             <table class="table-auto w-full overflow-auto">
                 <thead class="bg-main-dark">
