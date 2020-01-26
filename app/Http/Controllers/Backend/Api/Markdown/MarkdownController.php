@@ -31,7 +31,9 @@ class MarkdownController extends Controller
 
         $this->uploadImage(request()->file('image'));
 
-        return  response()->json('uploaded', 201);
+        $images = $this->getAllImages();
+
+        return response()->json($images, 201);
     }
 
     /**
@@ -42,6 +44,6 @@ class MarkdownController extends Controller
     {
         $this->deleteImage(request()->image);
 
-        return response()->json(['deleted' => true]);
+        return response()->json('deleted', 200);
     }
 }

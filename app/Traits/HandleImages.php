@@ -79,7 +79,7 @@ trait HandleImages
             $url = url('/') .'/' . $file;
 
             // Add 2 keys returned array for the actual image and its full url
-            $images[$key]['image'] = $file;
+            $images[$key]['image'] = '/'.$file;
             $images[$key]['url'] = $url;
         }
 

@@ -32,7 +32,7 @@ class MarkdownImagesControllerTest extends TestCase
                          ->decodeResponseJson();
 
         Storage::disk('public_uploads')->assertExists('uploads/', $image['image']->getClientOriginalname());
-        $this->assertEquals('uploaded', $response);
+        $this->assertCount(1, $response);
     }
 
     /** @test */
@@ -48,9 +48,9 @@ class MarkdownImagesControllerTest extends TestCase
 
         Storage::disk('public_uploads')->assertExists('uploads/', $image['image']->getClientOriginalname());
 
-        $res = $this->json('get', route('markdown.images'))->decodeResponseJson();
+        $response = $this->json('get', route('markdown.images'))->decodeResponseJson();
 
-        $this->assertCount(1, $res);
+        $this->assertCount(1, $response);
     }
 
      /** @test */

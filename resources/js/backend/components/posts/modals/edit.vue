@@ -11,7 +11,10 @@
         </select>
 
         <div v-if="type === 'image'">
-            <button class="btn btn-blue" @click="$modal.show('markdownimage',{edit: true})">Choose New Image</button>
+            <button class="btn btn-blue" @click="$modal.show('markdownimage',{edit: true})">
+              <i class="far fa-images"></i>
+              Image Gallery
+            </button>
 
             <figure>
               <img :src="'/'+ data" class="my-2">
@@ -31,6 +34,7 @@
 import Markdown from '../markdown/markdown'
 import MarkdownImage from '../markdown/markdownimage'
 
+
 export default {
   components: {
     Markdown,
@@ -42,7 +46,6 @@ export default {
       id: '',
       data: '',
       categories: [],
-      featured_image: ''
     }
   },
   watch:{
@@ -53,23 +56,6 @@ export default {
     }
   },
   methods: {
-    onChange(e) {
-
-      if(!e.target.files[0]) {
-        return this.data = ''
-      }
-
-      this.data = e.target.files[0]
-
-      let reader =  new FileReader
-
-      reader.readAsDataURL(e.target.files[0])
-
-      reader.onload = e => {
-        this.featured_image = e.target.result
-      }
-
-    },
     bodyData(value) {
       this.data = value
     },

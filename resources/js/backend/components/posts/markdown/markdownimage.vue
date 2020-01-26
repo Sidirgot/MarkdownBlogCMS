@@ -11,19 +11,19 @@
             </div>
 
             <div>
-                <button class="btn btn-red focus:outline-none" @click="deleteImage"><i class="fas fa-trash-alt"></i></button>
+                <button class="btn btn-red focus:outline-none" @click="deleteImage" v-show="image"><i class="fas fa-trash-alt"></i></button>
                 <button class="btn btn-blue focus:outline-none" @click="$modal.hide('markdownimage')"><i class="fas fa-times"></i></button>
             </div>
         </div>
 
         <div class="bg-navbar min-h-14">
-            <div class="lds-ripple" v-if="!loading"><div></div><div></div></div>
+            <div class="lds-ripple" v-show="uploading"><div></div><div></div></div>
 
-            <div class="flex flex-wrap" v-if="loading">
-
-                <div class="w-1/3" v-for="image in images" :key="image.id">
-                    <img :src="image.image" class="my-2 w-full h-32 hover:opacity-50 cursor-pointer" @click="selectImage(image)">
-                </div>
+            <div class="flex flex-wrap justify-center" v-show="! uploading">
+                <img v-for="image in images" :key="image.id" :src="image.image"
+                    class="my-2 mx-2 h-40 w-40 object-cover rounded hover:opacity-50 cursor-pointer"
+                    :class="{selected: opacity-50}"
+                    @click="selectImage(image)">
             </div>
         </div>
         <div class="px-2 py-4">
@@ -34,35 +34,35 @@
 
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
     data() {
         return {
-            images: {},
             image:'',
             featured: '',
-            loading: false,
             url: 'You havent selected any image.'
         }
     },
-    created() {
-        this.getImages()
+
+    computed: {
+        ...mapGetters('markdown', ['images','uploading'])
+    },
+
+    mounted() {
+        this.$store.dispatch('markdown/fetchImages')
     },
     methods: {
-        getImages() {
-            axios.get('/api/post/markdown/images')
-                 .then( (response) => {
-                     this.images = response.data
-                     this.loading = true
-                 })
-        },
+
         selectImage(image) {
             this.url = image.url
             this.image = image.image
         },
+
         setImage() {
             this.$emit('editImage',this.image)
             this.$modal.hide('markdownimage')
         },
+
         upload(e) {
 
             if(!e.target.files[0]) {
@@ -73,25 +73,10 @@ export default {
 
             form.append('image',e.target.files[0])
 
-            this.loading = false
-
-            axios.post('/api/post/markdown/upload', form)
-                 .then( res => {
-                     Bus.$emit('flash-message',{text:'Image Uploaded Successfully',type:'success'})
-                     this.getImages()
-                     this.loading = true
-                 })
-                 .catch( error => {
-                     this.loading = true
-                     Bus.$emit('flash-message',{text: error.response.data.errors ,type:'error'})
-                 })
+            this.$store.dispatch('markdown/UploadImage', form)
         },
-        deleteImage() {
-            if (!this.image) {
-                Bus.$emit('flash-message',{text:'You need to choose any image to be able to perform this action!',type:'info'})
-                return
-            }
 
+        deleteImage() {
             this.loading = false
             axios.post('/api/post/markdown/image',{image: this.image})
                  .then( res => {

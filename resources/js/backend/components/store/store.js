@@ -7,12 +7,14 @@ import categories from '../categories/categories'
 import posts from '../posts/post'
 import subscribers from '../subscribers/subscribers'
 
+import markdown from '../posts/markdown/markdown'
 
 export default new Vuex.Store ({
     modules: {
         categories,
         posts,
-        subscribers
+        subscribers,
+        markdown
     },
 
     state:{

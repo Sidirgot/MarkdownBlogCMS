@@ -1,6 +1,13 @@
 <template>
     <div class="container mx-auto my-2">
 
+        <div class="my-3 flex items-center justify-end">
+            <router-link :to="{name: 'posts'}" class="btn btn-purple">
+                <i class="fas fa-undo"></i>
+                Back
+            </router-link>
+        </div>
+
         <loading></loading>
 
         <div class="flex -mx-2" v-show="! loading">

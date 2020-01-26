@@ -78,14 +78,10 @@ export default {
                     .then(res => {
                         context.commit('delete_category', index)
                         resolve(res)
-                        Bus.$emit('flash-message', {text: `Category ${category.name} Deleted Successfully`,type: 'success'})
+                        Bus.$emit('flash-message', {message: `Category ${category.name} Deleted Successfully`,type: 'success'})
                     })
                     .catch( error => {
-                        if (error.response.data.errors) {
-                            Bus.$emit('flash-message',{bag: error.response.data.errors ,type:'error'})
-                        } else {
-                            Bus.$emit('flash-message',{text: error.response.data.message ,type:'error'})
-                        }
+                        Bus.$emit('flash-message',{bag: error.response.data.errors ,type:'error'})
                     })
             })
         },

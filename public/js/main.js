@@ -7244,6 +7244,13 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -7279,28 +7286,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      images: {},
       image: '',
       featured: '',
-      loading: false,
       url: 'You havent selected any image.'
     };
   },
-  created: function created() {
-    this.getImages();
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('markdown', ['images', 'uploading'])),
+  mounted: function mounted() {
+    this.$store.dispatch('markdown/fetchImages');
   },
   methods: {
-    getImages: function getImages() {
-      var _this = this;
-
-      axios.get('/api/post/markdown/images').then(function (response) {
-        _this.images = response.data;
-        _this.loading = true;
-      });
-    },
     selectImage: function selectImage(image) {
       this.url = image.url;
       this.image = image.image;
@@ -7310,42 +7309,16 @@ __webpack_require__.r(__webpack_exports__);
       this.$modal.hide('markdownimage');
     },
     upload: function upload(e) {
-      var _this2 = this;
-
       if (!e.target.files[0]) {
         return;
       }
 
       var form = new FormData();
       form.append('image', e.target.files[0]);
-      this.loading = false;
-      axios.post('/api/post/markdown/upload', form).then(function (res) {
-        Bus.$emit('flash-message', {
-          text: 'Image Uploaded Successfully',
-          type: 'success'
-        });
-
-        _this2.getImages();
-
-        _this2.loading = true;
-      })["catch"](function (error) {
-        _this2.loading = true;
-        Bus.$emit('flash-message', {
-          text: error.response.data.errors,
-          type: 'error'
-        });
-      });
+      this.$store.dispatch('markdown/UploadImage', form);
     },
     deleteImage: function deleteImage() {
-      var _this3 = this;
-
-      if (!this.image) {
-        Bus.$emit('flash-message', {
-          text: 'You need to choose any image to be able to perform this action!',
-          type: 'info'
-        });
-        return;
-      }
+      var _this = this;
 
       this.loading = false;
       axios.post('/api/post/markdown/image', {
@@ -7356,9 +7329,9 @@ __webpack_require__.r(__webpack_exports__);
           type: 'success'
         });
 
-        _this3.getImages();
+        _this.getImages();
 
-        _this3.loading = true;
+        _this.loading = true;
       });
     },
     close: function close() {
@@ -7462,6 +7435,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -7474,8 +7450,7 @@ __webpack_require__.r(__webpack_exports__);
       type: '',
       id: '',
       data: '',
-      categories: [],
-      featured_image: ''
+      categories: []
     };
   },
   watch: {
@@ -7486,21 +7461,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    onChange: function onChange(e) {
-      var _this = this;
-
-      if (!e.target.files[0]) {
-        return this.data = '';
-      }
-
-      this.data = e.target.files[0];
-      var reader = new FileReader();
-      reader.readAsDataURL(e.target.files[0]);
-
-      reader.onload = function (e) {
-        _this.featured_image = e.target.result;
-      };
-    },
     bodyData: function bodyData(value) {
       this.data = value;
     },
@@ -7513,27 +7473,27 @@ __webpack_require__.r(__webpack_exports__);
       this.data = e.params.data;
     },
     saveChanges: function saveChanges() {
-      var _this2 = this;
+      var _this = this;
 
       var payload = new FormData();
       payload.append([this.type], this.data);
       payload.append('_method', 'PATCH');
       axios.post('/oath/posts/' + this.id, payload).then(function (res) {
         Bus.$emit('flash-message', {
-          text: "".concat(_this2.type, " Updated Successfully"),
+          text: "".concat(_this.type, " Updated Successfully"),
           type: 'success'
         });
 
-        _this2.$modal.hide('post-edit');
+        _this.$modal.hide('post-edit');
 
-        _this2.$emit('refresh');
+        _this.$emit('refresh');
       });
     },
     fetchCategories: function fetchCategories() {
-      var _this3 = this;
+      var _this2 = this;
 
       axios.get('/oath/categories').then(function (res) {
-        _this3.categories = res.data;
+        _this2.categories = res.data;
       });
     },
     closed: function closed(e) {
@@ -7610,6 +7570,13 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -13074,6 +13041,14 @@ var render = function() {
           _c(
             "button",
             {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.image,
+                  expression: "image"
+                }
+              ],
               staticClass: "btn btn-red focus:outline-none",
               on: { click: _vm.deleteImage }
             },
@@ -13096,31 +13071,51 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "bg-navbar min-h-14" }, [
-        !_vm.loading
-          ? _c("div", { staticClass: "lds-ripple" }, [_c("div"), _c("div")])
-          : _vm._e(),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.uploading,
+                expression: "uploading"
+              }
+            ],
+            staticClass: "lds-ripple"
+          },
+          [_c("div"), _c("div")]
+        ),
         _vm._v(" "),
-        _vm.loading
-          ? _c(
-              "div",
-              { staticClass: "flex flex-wrap" },
-              _vm._l(_vm.images, function(image) {
-                return _c("div", { key: image.id, staticClass: "w-1/3" }, [
-                  _c("img", {
-                    staticClass:
-                      "my-2 w-full h-32 hover:opacity-50 cursor-pointer",
-                    attrs: { src: image.image },
-                    on: {
-                      click: function($event) {
-                        return _vm.selectImage(image)
-                      }
-                    }
-                  })
-                ])
-              }),
-              0
-            )
-          : _vm._e()
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: !_vm.uploading,
+                expression: "! uploading"
+              }
+            ],
+            staticClass: "flex flex-wrap justify-center"
+          },
+          _vm._l(_vm.images, function(image) {
+            return _c("img", {
+              key: image.id,
+              staticClass:
+                "my-2 mx-2 h-40 w-40 object-cover rounded hover:opacity-50 cursor-pointer",
+              class: { selected: _vm.opacity - 50 },
+              attrs: { src: image.image },
+              on: {
+                click: function($event) {
+                  return _vm.selectImage(image)
+                }
+              }
+            })
+          }),
+          0
+        )
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "px-2 py-4" }, [
@@ -13332,7 +13327,10 @@ var render = function() {
                       }
                     }
                   },
-                  [_vm._v("Choose New Image")]
+                  [
+                    _c("i", { staticClass: "far fa-images" }),
+                    _vm._v("\n          Image Gallery\n        ")
+                  ]
                 ),
                 _vm._v(" "),
                 _c("figure", [
@@ -13484,6 +13482,22 @@ var render = function() {
     "div",
     { staticClass: "container mx-auto my-2" },
     [
+      _c(
+        "div",
+        { staticClass: "my-3 flex items-center justify-end" },
+        [
+          _c(
+            "router-link",
+            { staticClass: "btn btn-purple", attrs: { to: { name: "posts" } } },
+            [
+              _c("i", { staticClass: "fas fa-undo" }),
+              _vm._v("\n            Back\n        ")
+            ]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
       _c("loading"),
       _vm._v(" "),
       _c(
@@ -30496,21 +30510,14 @@ __webpack_require__.r(__webpack_exports__);
           context.commit('delete_category', index);
           resolve(res);
           Bus.$emit('flash-message', {
-            text: "Category ".concat(category.name, " Deleted Successfully"),
+            message: "Category ".concat(category.name, " Deleted Successfully"),
             type: 'success'
           });
         })["catch"](function (error) {
-          if (error.response.data.errors) {
-            Bus.$emit('flash-message', {
-              bag: error.response.data.errors,
-              type: 'error'
-            });
-          } else {
-            Bus.$emit('flash-message', {
-              text: error.response.data.message,
-              type: 'error'
-            });
-          }
+          Bus.$emit('flash-message', {
+            bag: error.response.data.errors,
+            type: 'error'
+          });
         });
       });
     }
@@ -31437,6 +31444,71 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/backend/components/posts/markdown/markdown.js":
+/*!********************************************************************!*\
+  !*** ./resources/js/backend/components/posts/markdown/markdown.js ***!
+  \********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: {
+    images: [],
+    uploading: false
+  },
+  mutations: {
+    set_images: function set_images(state, images) {
+      state.images = images;
+    },
+    uploading: function uploading(state, _uploading) {
+      state.uploading = _uploading;
+    }
+  },
+  getters: {
+    images: function images(state) {
+      return state.images;
+    },
+    uploading: function uploading(state) {
+      return state.uploading;
+    }
+  },
+  actions: {
+    fetchImages: function fetchImages(context) {
+      context.commit('uploading', true);
+      axios.get('/api/markdown/images').then(function (response) {
+        context.commit('set_images', response.data);
+        context.commit('uploading', false);
+      });
+    },
+    UploadImage: function UploadImage(context, form) {
+      context.commit('uploading', true);
+      axios.post('/api/markdown/upload', form).then(function (response) {
+        context.commit('set_images', response.data);
+        context.commit('uploading', false);
+        context.commit('set_flashmessage', {
+          message: 'Image Uploaded Successfully',
+          type: 'success'
+        }, {
+          root: true
+        });
+      })["catch"](function (error) {
+        context.commit('uploading', false);
+        context.commit('set_flashmessage', {
+          bag: error.response.data.errors,
+          type: 'error'
+        }, {
+          root: true
+        });
+      });
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/backend/components/posts/markdown/markdown.vue":
 /*!*********************************************************************!*\
   !*** ./resources/js/backend/components/posts/markdown/markdown.vue ***!
@@ -32091,9 +32163,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _categories_categories__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../categories/categories */ "./resources/js/backend/components/categories/categories.js");
 /* harmony import */ var _posts_post__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../posts/post */ "./resources/js/backend/components/posts/post.js");
 /* harmony import */ var _subscribers_subscribers__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../subscribers/subscribers */ "./resources/js/backend/components/subscribers/subscribers.js");
+/* harmony import */ var _posts_markdown_markdown__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../posts/markdown/markdown */ "./resources/js/backend/components/posts/markdown/markdown.js");
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
+
 
 
 
@@ -32101,7 +32175,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
   modules: {
     categories: _categories_categories__WEBPACK_IMPORTED_MODULE_2__["default"],
     posts: _posts_post__WEBPACK_IMPORTED_MODULE_3__["default"],
-    subscribers: _subscribers_subscribers__WEBPACK_IMPORTED_MODULE_4__["default"]
+    subscribers: _subscribers_subscribers__WEBPACK_IMPORTED_MODULE_4__["default"],
+    markdown: _posts_markdown_markdown__WEBPACK_IMPORTED_MODULE_5__["default"]
   },
   state: {
     user: [],
