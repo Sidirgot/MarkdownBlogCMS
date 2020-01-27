@@ -26,6 +26,7 @@ class Post extends Model
      */
     protected $casts = [
         'status' => 'boolean',
+        'published' => 'datetime'
     ];
 
     /**
