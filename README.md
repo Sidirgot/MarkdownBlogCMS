@@ -33,7 +33,7 @@ Both of the above features will be included once they are out.
 
 ## State of the application
 
-At this point, the entire backend is under Vuex, and I am moving to build a basic frontend Blade like approach from the frontend.
+At this point, the entire backend is under Vuex, and I am moving to build a basic Blade like approach from the frontend.
 
 ## Features in development
 
