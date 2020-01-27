@@ -1,5 +1,5 @@
 <template>
-    <modal name="markdownimage" height="auto" :pivotY="0.2" :adaptive="true" :clickToClose="false" @closed="close">
+    <modal name="markdownimage" height="auto" :pivotY="0.2" :adaptive="true" :clickToClose="false" @closed="clearSelection">
         <div class="flex justify-between mx-2 py-2">
             <div>
                 <label for="featured" class="btn btn-indigo cursor-pointer inline-block text-sm">
@@ -7,7 +7,7 @@
                 </label>
                 <input id="featured" type="file" accept="image/*" @change="upload" class="hidden" required>
 
-                <button class="btn btn-blue focus:outline-none" @click="setImage">Select</button>
+                <button class="btn btn-blue focus:outline-none" @click="setImage" v-show="image">Select</button>
             </div>
 
             <div>
@@ -20,14 +20,19 @@
             <div class="lds-ripple" v-show="uploading"><div></div><div></div></div>
 
             <div class="flex flex-wrap justify-center" v-show="! uploading">
-                <img v-for="image in images" :key="image.id" :src="image.image"
-                    class="my-2 mx-2 h-40 w-40 object-cover rounded hover:opacity-50 cursor-pointer"
-                    :class="{selected: opacity-50}"
-                    @click="selectImage(image)">
+                <div  v-for="picture in images" :key="picture.id" class="relative">
+                <img :src="'/'+picture.image"
+                    class="my-2 mx-2 h-40 w-40 object-cover rounded hover:opacity-50 cursor-pointer "
+                    @click="selectImage(picture)">
+                    <span class="text-green-600 absolute" style="top:5px; right: 10px;" v-show="picture.image === image">
+                        <i class="fas fa-check"></i>
+                    </span>
+                </div>
             </div>
         </div>
-        <div class="px-2 py-4">
+        <div class="px-2 py-4 flex items-center justify-between">
             <h1 class="break-all text-white" v-text="url"></h1>
+            <button class="btn btn-purple" v-show="image" @click="clearSelection">Clear Selection</button>
         </div>
     </modal>
 </template>
@@ -39,8 +44,7 @@ export default {
     data() {
         return {
             image:'',
-            featured: '',
-            url: 'You havent selected any image.'
+            url: 'You havent selected any image.',
         }
     },
 
@@ -77,17 +81,11 @@ export default {
         },
 
         deleteImage() {
-            this.loading = false
-            axios.post('/api/post/markdown/image',{image: this.image})
-                 .then( res => {
-                     Bus.$emit('flash-message',{text:'Image Deleted Successfully',type:'success'})
-                     this.getImages()
-                     this.loading = true
-                 })
+            this.$store.dispatch('markdown/deleteImage', this.image)
         },
-        close() {
+
+        clearSelection() {
             this.image = ''
-            this.featured = ''
             this.url = ''
         }
     }

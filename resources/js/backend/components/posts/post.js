@@ -20,12 +20,13 @@ export default {
         },
 
         update_post(state, post) {
-            var index = state.posts.findIndex( (postItem) => postItem.id === post.id)
+            var index = state.posts.findIndex(postItem => postItem.id === post.id)
             state.posts.splice(index, 1, post)
+            state.post = post
         },
 
         detele_post(state, post) {
-            var index = state.posts.findIndex( (postItem) => postItem.id === post.id)
+            var index = state.posts.findIndex(postItem => postItem.id === post.id)
             state.posts.splice(index, 1)
         }
 
@@ -75,6 +76,24 @@ export default {
                             resolve(response)
                             context.commit('set_loading', false, { root: true})
                             context.commit('set_flashmessage',{message: 'Project Created Successfully', type: 'success'}, {root: true})
+                        })
+                        .catch( (error) => {
+                            reject(error)
+                            context.commit('set_flashmessage', { bag: error.response.data.errors, type: 'error' }, {root: true})
+                            context.commit('set_loading', false, { root: true})
+                        })
+            })
+        },
+
+        updatePost(context, {id, form}) {
+            return new Promise( (resolve, reject) => {
+                context.commit('set_loading', true, { root: true})
+                 axios.patch(`/api/posts/${id}`, form)
+                      .then( ( response ) => {
+                            context.commit('update_post', response.data)
+                            resolve(response)
+                            context.commit('set_loading', false, { root: true})
+                            context.commit('set_flashmessage',{message: 'Project Updated Successfully', type: 'success'}, {root: true})
                         })
                         .catch( (error) => {
                             reject(error)

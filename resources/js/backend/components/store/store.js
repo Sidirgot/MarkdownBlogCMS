@@ -14,7 +14,7 @@ export default new Vuex.Store ({
         categories,
         posts,
         subscribers,
-        markdown
+        markdown,
     },
 
     state:{

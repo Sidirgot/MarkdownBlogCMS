@@ -66,9 +66,9 @@ class MarkdownImagesControllerTest extends TestCase
 
         Storage::disk('public_uploads')->assertExists('uploads/', $image['image']->getClientOriginalname());
 
-        $res = $this->json('get', route('markdown.images'))->decodeResponseJson();
+        $response = $this->json('get', route('markdown.images'))->decodeResponseJson();
 
-        $this->json('post', route('markdown.destroy'), $res[0]);
+        $this->json('post', route('markdown.destroy'), $response[0]);
 
         Storage::disk('public_uploads')->assertMissing('uploads/'. $image['image']->getClientOriginalname());
      }

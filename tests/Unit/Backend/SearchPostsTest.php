@@ -28,7 +28,7 @@ class SearchPostsTest extends TestCase
 
         $term =  'this is';
 
-        $foundpost = Post::searchTitleAndSlug($term);
+        $foundpost = Post::searchTitleAndSlug($term)->get();
 
         $this->assertEquals($post->id, $foundpost[0]->id);
 

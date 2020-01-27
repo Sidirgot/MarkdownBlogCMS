@@ -34,11 +34,13 @@ export default {
             body: ''
         }
     },
+
     mounted() {
         if (this.val) {
             this.body = this.val
         }
     },
+
     watch: {
         body() {
             this.$emit('body', this.body)

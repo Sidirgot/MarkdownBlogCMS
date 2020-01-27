@@ -1,5 +1,5 @@
 <template>
-    <modal name="post-edit" height="auto" :scrollable="true" :pivotY="0.2" :adaptive="true" @before-open="loadData" @closed="closed">
+    <modal name="post-edit" height="auto" :scrollable="true" :pivotY="0.2" :clickToClose="false" :adaptive="true" @before-open="loadData" @closed="closed">
       <div class="p-2 bg-main-dark text-white" >
 
         <input type="text" v-model="data" class="bg-navbar p-2 w-full" v-if="(type === 'title' || type === 'slug')">
@@ -17,7 +17,7 @@
             </button>
 
             <figure>
-              <img :src="'/'+ data" class="my-2">
+              <img :src="data" class="my-2">
             </figure>
         </div>
 
@@ -31,71 +31,76 @@
 </template>
 
 <script>
-import Markdown from '../markdown/markdown'
+import Markdown from '../markdown/markdownComp'
 import MarkdownImage from '../markdown/markdownimage'
+import { mapGetters } from 'vuex'
 
 
 export default {
-  components: {
-    Markdown,
-    MarkdownImage
-  },
-  data() {
-    return {
-      type: '',
-      id: '',
-      data: '',
-      categories: [],
-    }
-  },
-  watch:{
-    type() {
-      if(this.type === 'category_id') {
-        this.fetchCategories()
+    name: 'post-edit',
+
+    components: {
+      Markdown,
+      MarkdownImage
+    },
+
+    data() {
+      return {
+        type: '',
+        id: '',
+        data: '',
+      }
+    },
+
+    watch:{
+      type() {
+        if(this.type === 'category_id') {
+          this.$store.dispatch('categories/fetchCategories')
+        }
+      }
+    },
+
+    computed: {
+      ...mapGetters('categories', ['categories'])
+    },
+
+    methods: {
+
+      bodyData(value) {
+        this.data = value
+      },
+
+      setImage(image) {
+        this.data = '/'+ image
+      },
+
+      loadData(e) {
+        this.type = e.params.type
+        this.id = e.params.id
+        this.data = e.params.data
+      },
+
+      saveChanges() {
+
+        if (this.type == "image") {
+          this.data = this.data.substr(1)
+        }
+
+        var form = {[this.type]: this.data}
+
+        var payload = { id: this.id, form: form}
+
+        this.$store.dispatch('posts/updatePost', payload)
+        this.$modal.hide('post-edit')
+      },
+
+      closed(e) {
+        this.type = ''
+        this.id = ''
+        this.data = ''
       }
     }
-  },
-  methods: {
-    bodyData(value) {
-      this.data = value
-    },
-    setImage(image) {
-      this.data = image
-    },
-    loadData(e) {
-      this.type = e.params.type
-      this.id = e.params.id
-      this.data = e.params.data
-    },
-    saveChanges() {
-
-      var payload =  new FormData()
-
-      payload.append([this.type], this.data)
-      payload.append('_method', 'PATCH')
-
-      axios.post('/oath/posts/'+ this.id,payload)
-           .then(res => {
-             Bus.$emit('flash-message',{text: `${this.type} Updated Successfully`,type: 'success'})
-             this.$modal.hide('post-edit')
-             this.$emit('refresh')
-           })
-    },
-    fetchCategories() {
-        axios.get('/oath/categories')
-            .then(res => {
-              this.categories = res.data
-            })
-    },
-    closed(e) {
-      this.type = ''
-      this.id = ''
-      this.data = ''
-      this.categories = []
-      this.featured_image = ''
-    }
   }
-}
 </script>
 
 

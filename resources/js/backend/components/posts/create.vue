@@ -71,7 +71,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Markdown from './markdown/markdown'
+import Markdown from './markdown/markdownComp'
 import CategoryCreate from '../categories/modals/create'
 import loading from '../partials/loading'
 import featuredImage from './helpers/featuredImage'
@@ -128,9 +128,10 @@ export default {
           data.append('slug',this.slug)
         }
 
-        this.$store.dispatch('posts/createPost', data).then( (response) => {
-          this.$router.push({name: 'show-post', params:{id: response.data.id}})
-        })
+        this.$store.dispatch('posts/createPost', data)
+                   .then( (response) => {
+                        this.$router.push({name: 'show-post', params:{id: response.data.id}})
+                    })
 
       }
     }

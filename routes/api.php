@@ -21,7 +21,7 @@ Route::middleware('auth:api')->group(function() {
     // Markdown Images
     Route::get('/markdown/images', 'Backend\Api\Markdown\MarkdownController@index')->name('markdown.images');
     Route::post('/markdown/upload', 'Backend\Api\Markdown\MarkdownController@upload')->name('markdown.upload');
-    Route::post('/markdown/image', 'Backend\Api\Markdown\MarkdownController@destroy')->name('markdown.destroy');
+    Route::post('/markdown/delete', 'Backend\Api\Markdown\MarkdownController@destroy')->name('markdown.destroy');
 
     // Search for a post
     Route::get('/search/{term}', 'Backend\Api\Posts\SearchController@search')->name('search.title');

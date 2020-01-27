@@ -45,7 +45,7 @@ class PostsController extends Controller
     {
         $post->update($request->validated());
 
-        return response()->json($post, 200);
+        return response()->json($post->load('category'), 200);
     }
 
     /**

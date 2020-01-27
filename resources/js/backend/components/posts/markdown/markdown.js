@@ -13,6 +13,11 @@ export default {
 
         uploading(state, uploading) {
             state.uploading = uploading
+        },
+
+        deleteImage(state, image) {
+            var index = state.images.findIndex(imageItem => imageItem.image === image)
+            state.images.splice(index, 1)
         }
     },
 
@@ -47,6 +52,13 @@ export default {
                  .catch( error => {
                      context.commit('uploading', false)
                      context.commit('set_flashmessage',{bag: error.response.data.errors, type: 'error'}, { root: true })
+                 })
+        },
+
+        deleteImage(context, image) {
+            axios.post('/api/markdown/delete', {image: image})
+                 .then( response => {
+                     context.commit('deleteImage', image)
                  })
         }
     }
