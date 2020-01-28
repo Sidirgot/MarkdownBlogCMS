@@ -1,40 +1,20 @@
 @extends('frontend.layouts.app')
 
-@section('title', '| Welcome')
+@section('title')
+| {{ $category->name }}
+@endsection
 
 @section('content')
-    <section class="">
-        <div class="bg-gray-600 relative">
-            <span class="absolute w-full h-full" style="background: rgba(0,0,0,0.3);"></span>
+    <section>
+        <categories name="{{ $category->name }}"></categories>
 
-            <img src="{{ $pinned->image }}" class="image-cover w-full object-cover" style="height:700px" alt="{{ $pinned->image }}">
-
-            <div class="absolute text-white text-2xl tracking-wider rounded p-4" style="left: 2%; bottom: 10%; background: rgba(0,0,0,0.3);">
-                <h1>
-                    <a href="" class="hover:opacity-50">
-                        {{ $pinned->title }}
-                    </a>
-                </h1>
-                <div class="tracking-wider text-sm py-4 text-center">
-                    <span class="text-blue-600 font-bold uppercase">
-                        <a href="{{ route('category', $pinned->category->name) }}" class="hover:opacity-50">
-                            {{ $pinned->category->name }}
-                        </a>
-                    </span> |
-                    <span class="text-gray-600">{{ $pinned->published->diffForHumans() }}</span>
-                </div>
-            </div>
-        </div>
-
-       <categories></categories>
-
-        <div class="mx-auto container w-full">
-            @foreach($posts as $post)
-                <div class="md:flex items-center mx-2 mb-24">
+        <div class="container mx-auto flex flex-wrap justify-center items-center">
+            @forelse($posts as $post)
+           <div class="md:flex items-center mx-2 mb-24 mt-12">
 
                     <div class="w-full md:w-2/4">
                         <a href="{{ route('post', $post->slug) }}">
-                            <img src="{{ $post->image }}" class=" w-full object-cover rounded hover:opacity-75" alt="{{ $post->image }}">
+                            <img src="{{ url($post->image) }}" class=" w-full object-cover rounded hover:opacity-75" alt="{{ $post->image }}">
                         </a>
                     </div>
 
@@ -61,15 +41,18 @@
 
 
                             <div class="py-6">
-                                <a href="{{ route('post', $post->slug) }}" class="btn btn-blue">
+                                <a href="{{ route('post', $post->slug) }}"class="btn btn-blue">
                                     Read More...
                                 </a>
                             </div>
                     </div>
                 </div>
-            @endforeach
+            @empty
+            <div class="text-2xl text-center w-full my-20">
+                <p>No posts for the specified category.</p>
+            </div>
+            @endforelse
         </div>
-
 
     </section>
 @endsection

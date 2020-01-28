@@ -10,7 +10,7 @@ class CategoriesController extends Controller
 {
     public function index()
     {
-        return Category::withCount('post')->latest()->get();
+        return Category::withCount('posts')->latest()->get();
     }
 
     /**

@@ -9,9 +9,10 @@
 
         <main class="content">
             @yield('content')
+
+            @include('frontend.layouts.partials.footer')
         </main>
 
-        @include('frontend.layouts.partials.footer')
         <script src="{{ mix('js/app.js') }}"> </script>
     </body>
 </html>

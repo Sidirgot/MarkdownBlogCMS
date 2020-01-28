@@ -11,7 +11,9 @@
         </a>
     </div>
     <div>
-        <img src="{{ asset('assets/logo.png') }}" class="h-16" alt="">
+        <a href="/">
+            <img src="{{ asset('assets/logo.png') }}" class="h-16" alt="">
+        </a>
     </div>
     <div>
         <i class="fas fa-search"></i>

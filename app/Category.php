@@ -16,11 +16,11 @@ class Category extends Model
     protected $fillable = ['name','icon','color'];
 
     /**
-     * Category has many App\Post
+     * Get all the category posts.
      *
      * @return Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function post()
+    public function posts()
     {
         return $this->hasMany(Post::class);
     }
