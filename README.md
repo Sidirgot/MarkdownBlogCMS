@@ -33,15 +33,15 @@ Both of the above features will be included once they are out.
 
 ## State of the application
 
-As I previously mentioned I am waiting for the February Laravel release.
+As I previously mentioned, I am waiting for the February Laravel release.
 
 ## Features in development
 
-- I am currently implementing a basic blade-like approach for the front end.
+- Currently writing a more in-depth documentation about the entire app.
 
 ## Future development
 
-- I am thinking of implementing a CRUD functinality for the subscribers or anything related to sending emails from within the application. Haven't made up my mind on the final implementation. Any suggestions are always welcome.
+- I am thinking of implementing a way to send emails from within the application. Haven't made up my mind on the final implementation. Any suggestions are always welcome.
 
 ## License
 
