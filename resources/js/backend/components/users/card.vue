@@ -37,17 +37,14 @@ export default {
     },
 
     created() {
-        this.fetchUser()
+        this.$store.dispatch('user/fetchUser')
     },
 
     computed: {
-        ...mapGetters(['user'])
+        ...mapGetters('user', ['user'])
     },
 
     methods: {
-        fetchUser() {
-            this.$store.dispatch('fetchUser')
-        },
         logout() {
             this.$store.dispatch('logout')
         }

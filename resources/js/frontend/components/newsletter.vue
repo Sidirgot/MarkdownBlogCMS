@@ -8,21 +8,19 @@
             <span v-show="errors.message != '' && errors.email === subscriber.email" v-text="errors.message"></span>
         </div>
 
-        <transition name="fade">
-            <div class="flex justify-center" v-show="! subscribed">
-                <input v-model="subscriber.email" type="email" class="rounded bg-gray-200 px-4 h-12 text-sm w-1/3" placeholder="Type your email address" required>
-                <button class="btn btn-blue h-12 uppercase" @click="subscribe">Subscribe</button>
-            </div>
-        </transition>
+            <transition name="fade" mode="out-in">
+                <div class="flex justify-center" v-if="! subscribed">
+                    <input v-model="subscriber.email" type="email" class="rounded bg-gray-200 px-4 h-12 text-sm w-1/3" placeholder="Type your email address" required>
+                    <button class="btn btn-blue h-12 uppercase" @click="subscribe">Subscribe</button>
+                </div>
 
-        <transition name="fade">
-            <span class="bg-green-600 rounded text-white p-4" v-show="subscribed">
-                <span class="h-3 w-3 p-2 bg-green-700 rounded-full text-sm">
-                    <i class="fas fa-check"></i>
+                <span class="bg-green-600 rounded text-white p-4" v-if="subscribed">
+                    <span class="h-3 w-3 p-2 bg-green-700 rounded-full text-sm">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="bg-green-600 tracking-wider">Thank you for subscribing to our newsletter.</span>
                 </span>
-                <span class="bg-green-600 tracking-wider">Thank you for subscribing to our newsletter.</span>
-            </span>
-        </transition>
+            </transition>
     </div>
 </template>
 

@@ -59,9 +59,12 @@ class UserRequest extends FormRequest
      */
     protected function uploadProfileImage()
     {
+        // if user has the default profile image
         if ($this->user->avatar === '/assets/user-avatar.jpg') {
             return $this->uploadImage($this->avatar, true);
-        } else if ($this->user->avatar != '/assets/user-avatar.jpg' ) {
+        }
+        // if user has a different image than the default 
+        else if ($this->user->avatar != '/assets/user-avatar.jpg' ) {
             return $this->updateImage($this->user->avatar, $this->avatar, true);
         }
     }

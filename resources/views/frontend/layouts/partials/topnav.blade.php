@@ -1,5 +1,5 @@
 <nav class="flex justify-around items-center h-24">
-    <div>
+    <div class="hidden md:block">
         <a href="" class="mx-2 hover:opacity-50">
             <i class="fab fa-facebook"></i>
         </a>
@@ -16,6 +16,6 @@
         </a>
     </div>
     <div>
-        <i class="fas fa-search"></i>
+        <search></search>
     </div>
 </nav>

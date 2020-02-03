@@ -6,19 +6,21 @@ Vue.use(Vuex)
 import categories from '../categories/categories'
 import posts from '../posts/post'
 import subscribers from '../subscribers/subscribers'
-
+import settings from '../settings/setting'
 import markdown from '../posts/markdown/markdown'
+import user from  '../users/user'
 
 export default new Vuex.Store ({
     modules: {
         categories,
         posts,
         subscribers,
+        settings,
         markdown,
+        user
     },
 
     state:{
-        user: [],
         loading: false,
         pagination: false,
         paginator: [],
@@ -33,14 +35,6 @@ export default new Vuex.Store ({
     mutations: {
         set_loading(state, status){
             state.loading = status
-        },
-
-        set_user(state, user){
-            state.user = user
-        },
-
-        reset_auth_user(state){
-            state.user = []
         },
 
         set_flashmessage(state, flashMessage) {
@@ -70,10 +64,6 @@ export default new Vuex.Store ({
             return state.loading
         },
 
-        user: state => {
-            return state.user
-        },
-
         flashMessage: state => {
             return state.flashMessage
         },
@@ -92,12 +82,6 @@ export default new Vuex.Store ({
     },
 
     actions: {
-        fetchUser(context) {
-            axios.get('/api/user/')
-                 .then( res => {
-                     context.commit('set_user', res.data)
-                 })
-        },
 
         logout(context) {
             axios.post('/logout')

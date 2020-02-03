@@ -22,33 +22,31 @@ trait HandleImages
     private $folder_name = 'uploads';
 
     /**
-     * Uploads an Image to the $disk/$folder_name,
-     * Var $profile indicates if the file is a user's profile avatar,
-     * if $profile is set to true, the file is saved under the
-     * assets folder in the specified disk
+     * Uploads an Image to the $disk/$folder_name.
+     * Var $assets indicates if the file is an asset.
+     * if $asset = true, the file is saved under the assets folder.
      *
      * @param \Illuminate\Http\UploadedFile $image
      */
-    public function uploadImage($image, $profile = false)
+    public function uploadImage($image, $assets = false)
     {
-        return $image->storeAs($profile ? 'assets' : $this->folder_name, $image->getClientOriginalName(), $this->disk);
+        return $image->storeAs($assets ? 'assets' : $this->folder_name, $image->getClientOriginalName(), $this->disk);
     }
 
     /**
-     * Deletes an image from the disk and uploads a new One
-     * $profile var indicates if the file is a user profile avatar
-     * if $profile is set to true, the file is saved under the
-     * assets folder in the specified disk
+     * Deletes an image from the disk and uploads a new one.
+     * Var $assets indicates if the file is an asset.
+     * if $asset = true, the file is saved under the assets folder.
      *
      * @param string $oldImage path
      * @param \Illuminate\Http\UploadedFile $newImage
      * @param boolean $profile
      */
-    public function updateImage($oldImage, $newImage, $profile = false)
+    public function updateImage($oldImage, $newImage, $assets = false)
     {
         $this->deleteImage($oldImage);
 
-        return $this->uploadImage($newImage, $profile ? true : '');
+        return $this->uploadImage($newImage, $assets ? true : '');
     }
 
     /**

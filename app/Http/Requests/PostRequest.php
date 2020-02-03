@@ -34,7 +34,7 @@ class PostRequest extends FormRequest
                 'slug' =>  'sometimes|string|unique:posts',
                 'content' => 'required',
                 'status' => 'sometimes|boolean',
-                'image' => 'required|file|image|max:5000',
+                'image' => 'required|file|image|max:2000',
                 'published' => 'sometimes|date',
                 'category_id' => 'required',
             ];

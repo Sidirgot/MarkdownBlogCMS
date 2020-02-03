@@ -54,7 +54,14 @@ class MainController extends Controller
     public function post(string $slug)
     {
         $post = Post::whereSlug($slug)->first();
-        
+
         return view('frontend.pages.article')->withPost($post);
+    }
+
+    public function search(string $term)
+    {
+        $posts = Post::searchTitleAndSlug($term)->get();
+
+        return view('frontend.pages.search')->withPosts($posts);
     }
 }

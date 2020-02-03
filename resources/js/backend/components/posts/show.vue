@@ -17,7 +17,7 @@
                     <h1 class="text-xl font-bold text-center my-3" @dblclick="$modal.show('post-edit',{id: post.id,data: post.title, type: 'title'})">{{ post.title }}</h1>
 
                     <figure class="my-2" @dblclick="$modal.show('post-edit',{id: post.id,data: '/'+post.image, type: 'image'})">
-                        <img :src="'/' + post.image" class="w-full rounded shadow" />
+                        <img :src="'/'+ post.image" class="w-full rounded shadow" />
                     </figure>
 
                     <div v-html="post.parsed" class="markdown_css my-3 text-sm" @dblclick="$modal.show('post-edit',{id: post.id,data: post.content, type: 'content'})">

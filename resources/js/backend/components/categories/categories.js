@@ -63,7 +63,7 @@ export default {
                      .then( (response) => {
                         context.commit('update_category', response.data)
                         resolve(response)
-                        context.commit('set_flashmessage', {message: 'Category Created Successfully', type: 'success'}, { root: true })
+                        context.commit('set_flashmessage', {message: 'Category Updated Successfully', type: 'success'}, { root: true })
                      })
                      .catch( (error) => {
                         reject(error)

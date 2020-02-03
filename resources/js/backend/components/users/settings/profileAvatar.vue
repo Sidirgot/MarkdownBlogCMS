@@ -11,30 +11,28 @@
             </label>
             <input id="user_avatar" type="file" accept="image/*" @change="onChange" class="hidden">
 
-            <button class="btn btn-blue" v-show="avatarFile" @click="saveAvatar">Save</button>
+            <button class="btn btn-blue" v-show="avatarFile" @click="changeAvatar">Save</button>
         </div>
 
-        <button class="btn btn-red" v-show="canDeleteAvatar" @click="deleteAvatar"><i class="fas fa-trash"></i></button>
+        <button v-if="user.avatar !== '/assets/user-avatar.jpg'" class="btn btn-red" @click="deleteAvatar"><i class="fas fa-trash"></i></button>
     </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
     name: 'upload-avatar',
-    props: ['user'],
 
     data() {
         return {
             avatar: '',
             avatarFile: '',
-            canDeleteAvatar: false
         }
     },
 
-    mounted() {
-        if (this.user.avatar !== 'assets/user-avatar.jpg') {
-            this.canDeleteAvatar = true
-        }
+    computed: {
+        ...mapGetters('user', ['user'])
     },
 
     methods: {
@@ -55,33 +53,22 @@ export default {
             }
         },
 
-        saveAvatar() {
+        changeAvatar() {
             var data = new FormData()
 
             data.append('avatar', this.avatarFile)
             data.append('_method', 'patch')
 
-            axios.post('/oath/users/'+ this.user.id, data)
-                 .then( res => {
-                   this.$modal.hide('user-edit')
-                   Bus.$emit('flash-message', {text: 'Avatar Updated Successfully',type: 'success',});
-                   Bus.$emit('refresh-user-info')
-                 })
-                 .catch(error => {
-                   Bus.$emit('flash-message',{bag: error.response.data.errors, type: 'error'})
-                 })
+            var payload = {user: this.user, data}
+
+            this.$store.dispatch('user/changeAvatar', payload)
+                       .then( () => {
+                           this.$modal.hide('user-edit')
+                       })
         },
 
         deleteAvatar() {
-            axios.patch(`/oath/users/reset/${this.user.id}/avatar`)
-                 .then( res => {
-                   this.$modal.hide('user-edit')
-                   Bus.$emit('flash-message', {text: 'Avatar Deleted Successfully',type: 'success',});
-                   Bus.$emit('refresh-user-info')
-                 })
-                 .catch(error => {
-                   Bus.$emit('flash-message',{bag: error.response.data.errors, type: 'error'})
-                 })
+            this.$store.dispatch('user/deleteAvatar', this.user)
         },
     }
 }

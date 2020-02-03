@@ -33,17 +33,15 @@ Both of the above features will be included once they are out.
 
 ## State of the application
 
-At this point, the entire backend is under Vuex, and I am moving to build a basic Blade like approach from the frontend.
+As I previously mentioned I am waiting for the February Laravel release.
 
 ## Features in development
-
-> As I previously mentioned I am waiting for the February Laravel release.
 
 - I am currently implementing a basic blade-like approach for the front end.
 
 ## Future development
 
-- I can't figure out the best approach on how to handle the subscription process. I am thinking of implementing an email template that can be controlled from the backend to be able to notify subscribers of any email related think, without having to reach for an outside email platform. Another idea is to be able to handle how many times a week the subscriber will be notified for any new posts, and on that note be able to control what post to show in the email, etc.
+- I am thinking of implementing a CRUD functinality for the subscribers or anything related to sending emails from within the application. Haven't made up my mind on the final implementation. Any suggestions are always welcome.
 
 ## License
 

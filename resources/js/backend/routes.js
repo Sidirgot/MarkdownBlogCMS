@@ -6,6 +6,8 @@ import Categories from './components/categories/index'
 
 import Subscribers from './components/subscribers/index'
 
+import Settings from './components/settings/index'
+
 import NotFound from './components/partials/notfound'
 
 export default {
@@ -44,6 +46,13 @@ export default {
             component: Subscribers,
             name: 'subscribers',
         },
+
+        {
+            path: '/manage/settings',
+            component: Settings,
+            name: 'settings',
+        },
+
         {
             path: '/manage/*',
             component: NotFound

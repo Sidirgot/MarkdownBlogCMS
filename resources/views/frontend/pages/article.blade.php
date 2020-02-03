@@ -23,7 +23,7 @@
                 <img class="w-full rounded object-cover" style="height:700px" src="{{ url($post->image) }}" alt="{{ $post->image }}">
             </div>
 
-            <div class="markdown_css py-8 mx-32">{!! $post->parsed !!}</div>
+            <div class="markdown_css py-8 mx-32 tracking-wide leading-loose">{!! $post->parsed !!}</div>
         </div>
     </section>
 @endsection

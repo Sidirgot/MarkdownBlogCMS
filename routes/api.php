@@ -3,7 +3,7 @@
 Route::middleware('auth:api')->group(function() {
     Route::get('/user', 'Backend\Api\UsersController@authUser')->name('auth.user');
     Route::patch('/user/{user}', 'Backend\Api\UsersController@update')->name('user.update');
-    Route::patch('/users/reset/{user}/avatar', 'Backend\Api\UsersController@resetAvatar')->name('reset.avatar');
+    Route::patch('/reset/avatar/{user}', 'Backend\Api\UsersController@resetAvatar')->name('reset.avatar');
 
     // Categories
     Route::resource('/categories', 'Backend\Api\CategoriesController');
@@ -31,5 +31,8 @@ Route::middleware('auth:api')->group(function() {
 
     // Subscribers
     Route::resource('/subscribers', 'Backend\Api\SubscribersController');
+
+    // Settings
+    Route::resource('/settings', 'Backend\Api\SettingsController');
 });
 

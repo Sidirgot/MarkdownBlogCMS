@@ -7,18 +7,26 @@
                 <a href="/">Sidirgot</a>
             </div>
 
-            <div class="ml-20 text-sm">
+            <div class="md:ml-5 lg:ml-20 text-sm">
+
                 <router-link :to="{name:'posts'}" class="px-2 hover:opacity-50">
                     <i class="fas fa-clipboard text-lg"></i>
                     Posts
                 </router-link>
+
                 <router-link :to="{name:'categories'}" class="px-2 hover:opacity-50">
                     <i class="fas fa-newspaper text-lg"></i>
                     Categories
                 </router-link>
+
                 <router-link :to="{name:'subscribers'}" class="px-2 hover:opacity-50">
                     <i class="fas fa-envelope-open-text text-lg"></i>
                     Subscribers
+                </router-link>
+
+                <router-link :to="{name:'settings'}" class="px-2 hover:opacity-50">
+                    <i class="fas fa-cog text-lg"></i>
+                    Settings
                 </router-link>
             </div>
         </div>
@@ -40,17 +48,25 @@
         <transition name="dropdown">
             <div class="absolute md:hidden top-4 w-full text-white bg-navbar p-4 shadow-lg z-50" v-show="isOpen">
                 <div class="flex flex-col">
+
                     <router-link :to="{name:'posts'}" @click.native="isOpen = false" class="border-b border-dashed border-white py-2 hover:opacity-50">
                         <i class="fas fa-clipboard text-lg"></i>
                         Posts
                     </router-link>
+
                     <router-link :to="{name:'categories'}" @click.native="isOpen = false" class="border-b border-dashed border-white py-2 hover:opacity-50">
                         <i class="fas fa-newspaper text-lg"></i>
                         Categories
                     </router-link>
+
                     <router-link :to="{name:'subscribers'}" @click.native="isOpen = false" class="border-b border-dashed border-white py-2 hover:opacity-50">
                         <i class="fas fa-envelope-open-text text-lg"></i>
                         Subscribers
+                    </router-link>
+
+                     <router-link :to="{name:'settings'}" @click.native="isOpen = false" class="py-2 hover:opacity-50">
+                        <i class="fas fa-cog text-lg"></i>
+                        Settings
                     </router-link>
                 </div>
 

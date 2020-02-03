@@ -1,8 +1,6 @@
 <template>
     <div class="mx-4">
-        <div class="flex justify-between items-center mx-2 mb-4">
-            <h1 class="text-xl tracking-wider my-2 text-white"></h1>
-
+        <div class="flex justify-end items-center mx-2 mb-4">
             <button class="btn btn-indigo" @click="$modal.show('category-create')">
                 Create New Category <span class="span-icon bg-indigo-800 "><i class="fas fa-plus"></i></span>
             </button>
@@ -18,21 +16,21 @@
 
                 <thead class="bg-main-dark rounded">
                     <th>Name</th>
-                    <th>Color</th>
-                    <th>Icon</th>
+                    <th class="hidden md:table-cell">Color</th>
+                    <th class="hidden md:table-cell">Icon</th>
                     <th>Actions</th>
                 </thead>
 
                 <transition-group name="fade" tag="tbody">
                     <tr class="border-b border-main-dark" v-for="( category, index ) in categories" :key="category.id">
-                        <td>{{ category.name }} ( {{ category.post_count }} )</td>
-                        <td>
+                        <td>{{ category.name }} ( {{ category.posts_count }} )</td>
+                        <td class="hidden md:table-cell">
                             <span class="px-2 rounded-full" :style="{'background-color': category.color}"></span>
                         </td>
-                        <td>
+                        <td class="hidden md:table-cell">
                             <i :class="category.icon"></i>
                         </td>
-                        <td class="inline-flex">
+                        <td class="flex flex-wrap md:inline-flex justify-center">
                             <button class="btn btn-yellow mr-2" @click="$modal.show('category-edit', { category })" >
                                 <i class="fas fa-pen-square text-sm"></i>
                             </button>

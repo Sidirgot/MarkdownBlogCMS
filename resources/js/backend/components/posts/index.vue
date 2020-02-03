@@ -3,7 +3,7 @@
         <div class="flex justify-between flex-wrap items-center mb-4">
             <search></search>
 
-            <router-link :to="{name: 'create-post'}" class="btn btn-indigo">
+            <router-link :to="{name: 'create-post'}" class="my-3 md:my-0 btn btn-indigo">
                 Create New Post<span class="span-icon bg-indigo-800 "><i class="fas fa-plus"></i></span>
             </router-link>
         </div>

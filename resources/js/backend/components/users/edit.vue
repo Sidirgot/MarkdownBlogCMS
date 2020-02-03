@@ -1,7 +1,13 @@
 <template>
-    <modal name="user-edit" height="auto" :pivotY="0.2" @before-open="beforeOpen" :adaptive="true">
+    <modal name="user-edit" height="auto" :pivotY="0.2" @before-open="beforeOpen" :adaptive="true" :clickToClose="false">
         <div class="p-4 bg-main-dark text-white">
-            <h1 class="text-lg py-2 border-b border-navbar ">Update User Profile</h1>
+            <div class="flex justify-between items-center border-b border-navbar">
+                <h1 class="text-lg py-2">Update User Profile</h1>
+
+                <button @click="$modal.hide('user-edit')" class="btn btn-blue">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
 
             <div class="flex my-2">
                 <button class="btn btn-indigo mx-2" @click="panel = '1'">Profile Details</button>
@@ -31,7 +37,7 @@
             </div>
 
             <div v-show="panel === '2'">
-                <profileAvatar :user="user" />
+                <profileAvatar/>
             </div>
 
         </div>
@@ -54,21 +60,12 @@ export default {
     methods: {
         beforeOpen (event) {
              this.user = event.params.user
-             if (this.user.avatar !== 'assets/user-avatar.jpg') {
-                 this.canDeleteAvatar = true
-             }
         },
         saveChanges() {
-            axios.patch('/oath/users/'+ this.user.id,  this.user )
-               .then( res => {
-                    this.$modal.hide('user-edit')
-                    Bus.$emit('flash-message', {text: 'User Updated Successfully',type: 'success',});
-                    Bus.$emit('refresh-user-info')
-
-               })
-               .catch(error => {
-                   Bus.$emit('flash-message',{bag: error.response.data.errors, type: 'error'})
-               })
+            this.$store.dispatch('user/updateUser', this.user)
+                       .then(() => {
+                           this.$modal.hide('user-edit')
+                       })
         },
     }
 }

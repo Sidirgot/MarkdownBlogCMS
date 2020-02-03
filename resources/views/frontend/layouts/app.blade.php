@@ -5,9 +5,10 @@
     </head>
     <body>
         @include('frontend.layouts.partials.adminNavbar')
-        @include('frontend.layouts.partials.topnav')
 
         <main class="content">
+            @include('frontend.layouts.partials.topnav')
+
             @yield('content')
 
             @include('frontend.layouts.partials.footer')

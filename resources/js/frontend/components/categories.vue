@@ -1,6 +1,6 @@
 <template>
-     <div class="flex justify-center items-center py-12 border-t border-dark">
-        <span v-for="category in categories" :key="category.id" class="text-lg mx-6 tracking-widest hover:text-blue-600">
+     <div class="flex flex-wrap justify-center items-center py-12 border-t border-dark">
+        <span v-for="category in categories" :key="category.id" class="text-lg mx-6 tracking-widest hover:text-blue-600 my-3">
             <a :href="'/category/'+ category.name" :class="{'text-blue-600': category.name === name}" v-text="category.name"></a>
         </span>
     </div>
