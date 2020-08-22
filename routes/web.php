@@ -20,8 +20,6 @@ Route::post('/subscriber/new', 'Frontend\SubscribersController@submit')->name('n
 Route::delete('/cancel/subscriber/{email}/{token}', 'Frontend\SubscribersController@cancel')
                                                               ->name('subscribers.cancel');
 
-Route::get('/search/{term}', 'Frontend\MainController@search')->name('search');
-
 Route::prefix('manage')->middleware('auth')->group(function () {
      Route::get('/{any}', 'Backend\DashboardController@index')->where('any', '.*');
 });

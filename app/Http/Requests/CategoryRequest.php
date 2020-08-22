@@ -16,15 +16,11 @@ class CategoryRequest extends FormRequest
         if ($this->isMethod('post')) {
             return [
                 'name' => 'required|string|unique:categories',
-                'color' => 'sometimes',
-                'icon' => 'sometimes',
             ];
         }
 
         return [
             'name' => 'sometimes|string|unique:categories,name,'.$this->category->id,
-            'color' => 'sometimes',
-            'icon' => 'sometimes',
         ];
     }
 }

@@ -11,7 +11,7 @@
 
             <div class="absolute text-white text-2xl tracking-wider rounded p-4" style="left: 2%; bottom: 10%; background: rgba(0,0,0,0.3);">
                 <h1>
-                    <a href="" class="hover:opacity-50">
+                    <a href="{{ route('post', $pinned->slug) }}" class="hover:opacity-50">
                         {{ $pinned->title }}
                     </a>
                 </h1>

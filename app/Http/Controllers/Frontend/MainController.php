@@ -15,7 +15,7 @@ class MainController extends Controller
     public function index()
     {
         $pinned = Post::published()->latest()->take(1)->first();
-        dd($pinned);
+        
         $posts = Post::published()->latest()->skip(1)->take(3)->get();
 
         return view('frontend.welcome')->withPinned($pinned)
@@ -57,12 +57,5 @@ class MainController extends Controller
         $post = Post::whereSlug($slug)->first();
 
         return view('frontend.pages.article')->withPost($post);
-    }
-
-    public function search(string $term)
-    {
-        $posts = Post::searchTitleAndSlug($term)->get();
-
-        return view('frontend.pages.search')->withPosts($posts);
     }
 }
