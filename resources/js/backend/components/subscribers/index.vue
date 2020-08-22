@@ -8,19 +8,21 @@
             <h1 class="text-lg text-white tracking-wider py-4">Subscribers Table</h1>
 
             <table class="table-auto w-full overflow-auto">
-                <thead class="bg-main-dark">
+                <thead class="bg-main-dark leading-10">
                     <th class="py-2">Email</th>
                     <th class="py-2">Subcription Date</th>
                 </thead>
 
-                <tr class="text-center border-b border-main-dark" v-for="subscriber in subscribers" :key="subscriber.id">
+                <tr class="odd:bg-main-dark even:bg-navbar leading-8 text-center" v-for="subscriber in subscribers" :key="subscriber.id">
                     <td class="py-2">{{ subscriber.email }}</td>
                     <td class="py-2">{{ subscriber.created_at }}</td>
                 </tr>
             </table>
         </div>
 
-        <paginator @fetchData="fetchSubscribers" v-show="! loading"></paginator>
+        <div class="text-right">
+            <paginator @fetchData="fetchSubscribers" v-show="! loading"></paginator>
+        </div>
 
     </div>
 </template>

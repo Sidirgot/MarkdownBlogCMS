@@ -43,6 +43,19 @@ export default {
     },
 
     actions: {
+
+        async postFormData() {
+            return new Promise( (resolve, reject) => {
+                axios.get('/api/post/formData')
+                     .then((response) => {
+                         resolve(response)
+                     })
+                     .catch(error => {
+                        reject(error) 
+                     })
+            })  
+        },
+
         fetchPosts(context, page_url) {
 
             page_url = page_url || '/api/posts'
@@ -121,9 +134,11 @@ export default {
                  })
         },
 
-        filterPosts(context, term) {
+        filterPosts(context, payload) {
+            
             context.commit('set_loading', true, { root: true})
-            axios.get(`/api/search/${term}`)
+
+            axios.get(`/api/post/search`, {params: payload})
                  .then( (response) => {
                      context.commit('set_posts', response.data.data)
                      context.commit('set_paginator', response.data, { root: true })

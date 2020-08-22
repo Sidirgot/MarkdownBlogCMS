@@ -10,21 +10,15 @@ Route::middleware('auth:api')->group(function() {
 
     // Posts
     Route::resource('/posts', 'Backend\Api\Posts\PostsController');
+    Route::get('/post/formData', 'Backend\Api\Posts\SearchController@formData');
+    Route::get('/post/search', 'Backend\Api\Posts\SearchController@search');
 
-    // Post Actions
-    Route::get('/published/posts', 'Backend\Api\Posts\PostActionController@published')
-                                                                      ->name('published.posts');
-    Route::get('/drafts/posts', 'Backend\Api\Posts\PostActionController@drafts')
-                                                                      ->name('draft.posts');
     Route::patch('/action/{status}/{post}', 'Backend\Api\Posts\PostActionController@status')
                                                                       ->name('post.status');
     // Markdown Images
     Route::get('/markdown/images', 'Backend\Api\Markdown\MarkdownController@index')->name('markdown.images');
     Route::post('/markdown/upload', 'Backend\Api\Markdown\MarkdownController@upload')->name('markdown.upload');
     Route::post('/markdown/delete', 'Backend\Api\Markdown\MarkdownController@destroy')->name('markdown.destroy');
-
-    // Search for a post
-    Route::get('/search/{term}', 'Backend\Api\Posts\SearchController@search')->name('search.title');
 
     // Social media acounts
     Route::resource('/socialMedia', 'Backend\Api\SocialMediaController');

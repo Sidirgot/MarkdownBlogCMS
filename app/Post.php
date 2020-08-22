@@ -20,6 +20,15 @@ class Post extends Model
     ];
 
     /**
+     * Relationships to eager load.
+     *
+     * @var array
+     */
+    protected $with = [
+        'category'
+    ];
+
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array
@@ -81,9 +90,9 @@ class Post extends Model
      *
      * @param string $term
      */
-    public static function searchTitleAndSlug(string $term)
+    public function scopeSearchTitleAndSlug($query, string $term)
     {
-        return self::where('title', 'LIKE', "%{$term}%")
+        return $query->where('title', 'LIKE', "%{$term}%")
                     ->orWhere('slug', 'LIKE', "%{$term}%");
     }
 

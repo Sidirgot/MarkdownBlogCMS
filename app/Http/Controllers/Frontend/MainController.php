@@ -15,6 +15,7 @@ class MainController extends Controller
     public function index()
     {
         $pinned = Post::published()->latest()->take(1)->first();
+        dd($pinned);
         $posts = Post::published()->latest()->skip(1)->take(3)->get();
 
         return view('frontend.welcome')->withPinned($pinned)

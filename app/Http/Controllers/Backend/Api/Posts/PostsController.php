@@ -8,9 +8,14 @@ use App\Http\Requests\PostRequest;
 
 class PostsController extends Controller
 {
+    /**
+     * Return the required resource.
+     *
+     * @return void
+     */
     public function index()
     {
-        return Post::latest()->paginate(20);
+        return Post::latest()->paginate(10);
     }
 
     /**

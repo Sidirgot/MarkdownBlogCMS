@@ -9,8 +9,8 @@
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
         <title>Login</title>
     </head>
-    <body class="bg-gray-200">
-            <section class="flex justify-center items-center h-full">
+    <body class="bg-gray-200 min-h-screen">
+            <section class="flex justify-center items-center min-h-screen">
                 <div class="bg-white rounded shadow-xl w-full md:w-1/3 mx-2 md:mx-0 text-center">
                     <div class="flex justify-center items-center py-6">
                         <img class="h-20 mr-4" src="/assets/logo.png" alt="sidirgot logo">

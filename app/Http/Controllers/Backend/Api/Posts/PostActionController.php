@@ -11,24 +11,6 @@ class PostActionController extends Controller
     use HandleImages;
 
     /**
-     * Return all the Published post
-     *
-     */
-    public function published()
-    {
-        return Post::published()->paginate(20);
-    }
-
-    /**
-     * Return all saved posts
-     *
-     */
-    public function drafts()
-    {
-        return Post::drafts()->paginate(20);
-    }
-
-    /**
      * Change the status of a post.
      *
      * @param string $status

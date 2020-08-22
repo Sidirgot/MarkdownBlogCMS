@@ -2,13 +2,9 @@
 
 The Application is an API driven, Markdown-based Backend CMS for a blog-like website.
 
-> Note: On the upcoming 2020 February release of Laravel, Taylor will move all the Authentication Controllers out of the main framework and into the Laravel UI package.
-> Moreover, in February he will also release a stable version for the Laravel Airlock Package, which will provide a more SPA authentication approach.
-Both of the above features will be included once they are out.
-
 **Technology stack**
 
-- Laravel 6.10 and up
+- Laravel 7
 - Vuejs
 - Vue Router
 - Vue Js Modal
@@ -29,15 +25,7 @@ Both of the above features will be included once they are out.
 
 - Every API endpoint controller has a corresponding Test to back it up.
 
-> The Javascript used for the backend is compiled on a different file than the frontend. This is mainly to provide the ability to choose a blade-like approach for the frontend.
-
-## State of the application
-
-As I previously mentioned, I am waiting for the February Laravel release.
-
-## Features in development
-
-- Currently writing a more in-depth documentation about the entire app.
+> The Javascript used for the backend is compiled on a different file than the frontend. This is mainly to provide the ability to choose a blade-like approach for the frontend and keep the javascript on the frontend to a minimum.
 
 ## Future development
 
