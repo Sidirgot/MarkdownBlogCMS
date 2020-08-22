@@ -17,38 +17,6 @@ class PostActionControllerTest extends TestCase
     }
 
     /** @test */
-    public function paginated_posts_that_have_been_published()
-    {
-        $this->admin();
-
-        $post = $this->createPost();
-
-        $post->publish();
-
-        $response = $this->json('get', route('published.posts'))->decodeResponseJson();
-
-        $this->assertTrue($response['data'][0]['status']);
-        $this->assertEquals($post->title, $response['data'][0]['title']);
-    }
-
-    /** @test */
-    public function paginated_posts_that_are_saved_as_drafts()
-    {
-        $this->admin();
-
-        $post = $this->createPost();
-
-        $post->publish();
-
-        $this->assertTrue($post->status);
-
-        $response = $this->json('get', route('draft.posts'))->decodeResponseJson();
-
-        $this->assertEmpty($response['data']);
-        $this->assertEquals(0, $response['total']);
-    }
-
-    /** @test */
     public function a_post_can_be_published()
     {
         $this->admin();
