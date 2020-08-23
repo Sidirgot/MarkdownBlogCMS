@@ -20,8 +20,8 @@
             <table class="table-fixed w-full text-center text-sm">
 
                 <thead class="bg-main-dark rounded leading-10">
-                    <th>Type</th>
-                    <th>Actions</th>
+                    <th class="py-2">Type</th>
+                    <th class="py-2">Actions</th>
                 </thead>
 
                 <transition-group name="fade" tag="tbody">

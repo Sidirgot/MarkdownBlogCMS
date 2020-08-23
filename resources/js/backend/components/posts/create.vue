@@ -144,6 +144,7 @@ export default {
 
         this.$store.dispatch('posts/createPost', data)
                    .then( (response) => {
+                        this.$toasted.success('Post Created Successfully')
                         this.$router.push({name: 'show-post', params:{id: response.data.id}})
                     })
 

@@ -80,12 +80,16 @@ export default {
 
             this.$store.dispatch('user/changeAvatar', payload)
                        .then( () => {
+                           this.$toasted.success('User Avatar Updated Successfully')
                            this.$modal.hide('user-edit')
                        })
         },
 
         deleteAvatar() {
             this.$store.dispatch('user/deleteAvatar', this.user)
+                        .then(() => {
+                            this.$toasted.success('User Avatar Deleted Successfully')
+                        })
         },
     }
 }

@@ -18,10 +18,9 @@
             </svg>
         </button>
 
-        <textarea v-model="body" class="bg-main-dark p-2 w-full" rows="30" required v-show="!frontend"></textarea>
+        <textarea v-model="body" class="bg-navbar border p-2 w-full" rows="30" required v-show="!frontend"></textarea>
 
-        <div class="markdown_css container mx-auto bg-main-dark p-2 rounded" v-html="frontend" v-show="frontend"></div>
-
+        <div class="markdown_css container mx-auto bg-navbar p-2 rounded overflow-y-scroll height-40rem " v-html="frontend" v-show="frontend"></div>
 
         <MarkdownImage />
     </div>
@@ -73,6 +72,10 @@ export default {
 </script>
 
 <style lang="scss">
+.height-40rem {
+    height: 40rem;
+}
+
 .markdown_css {
 
     body {

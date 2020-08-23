@@ -39,13 +39,12 @@ export default {
         deleteSubscriber(context, {index, subscriber}) {
             return new Promise( (resolve, reject) => {
                 axios.delete(`/api/subscribers/${subscriber.id}`)
-                    .then(res => {
+                    .then(response => {
                         context.commit('delete_subscriber', index)
-                        resolve(res)
-                        context.commit('set_flashmessage', {message: 'Subscriber Deleted Successfully', type: 'success'}, { root: true })
+                        resolve(response)
                     })
                     .catch( error => {
-                        context.commit('set_flashmessage',{bag: error.response.data.errors, type: 'error'}, { root: true })
+                        reject(error)
                     })
             })
         },

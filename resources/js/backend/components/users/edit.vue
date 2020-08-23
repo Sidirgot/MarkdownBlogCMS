@@ -1,6 +1,6 @@
 <template>
     <modal name="user-edit" height="auto" :pivotY="0.2" @before-open="beforeOpen" :adaptive="true" :clickToClose="false">
-        <div class="p-4 bg-main-dark text-white">
+        <div class="p-4 bg-main-dark text-white w-full">
             <div class="flex justify-between items-center border-b border-navbar">
                 <h1 class="text-lg py-2">Update User Profile</h1>
 
@@ -63,6 +63,7 @@ export default {
         saveChanges() {
             this.$store.dispatch('user/updateUser', this.user)
                        .then(() => {
+                           this.$toasted.success('User Details Updated Successfully')
                            this.$modal.hide('user-edit')
                        })
         },

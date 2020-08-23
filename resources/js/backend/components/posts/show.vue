@@ -99,6 +99,9 @@ export default {
             var payload = {post: this.post, status: status}
 
             this.$store.dispatch('posts/changeStatus', payload)
+                        .then(() => {
+                            this.$toasted.success(`Post ${status} successfully`)
+                        })
         },
     },
 }

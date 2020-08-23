@@ -24,27 +24,11 @@ export default new Vuex.Store ({
         loading: false,
         pagination: false,
         paginator: [],
-        flashMessage: {
-            message: '',
-            type: '',
-            bag: ''
-        },
-        flashMessageFlag: false,
     },
 
     mutations: {
         set_loading(state, status){
             state.loading = status
-        },
-
-        set_flashmessage(state, flashMessage) {
-            state.flashMessageFlag = true
-
-            state.flashMessage = flashMessage
-
-            setTimeout(() => {
-                state.flashMessageFlag = false
-            }, 3000)
         },
 
         set_paginator(state, data) {
@@ -62,14 +46,6 @@ export default new Vuex.Store ({
     getters: {
         loading: state => {
             return state.loading
-        },
-
-        flashMessage: state => {
-            return state.flashMessage
-        },
-
-        flashMessageFlag: state => {
-            return state.flashMessageFlag
         },
 
         pagination: state => {

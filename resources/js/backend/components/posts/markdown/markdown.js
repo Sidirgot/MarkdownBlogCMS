@@ -42,24 +42,32 @@ export default {
         },
 
         UploadImage(context, form) {
-            context.commit('uploading', true)
-            axios.post('/api/markdown/upload', form)
-                 .then( response => {
-                     context.commit('set_images', response.data)
-                     context.commit('uploading', false)
-                     context.commit('set_flashmessage', {message: 'Image Uploaded Successfully', type: 'success'}, { root: true })
-                 })
-                 .catch( error => {
-                     context.commit('uploading', false)
-                     context.commit('set_flashmessage',{bag: error.response.data.errors, type: 'error'}, { root: true })
-                 })
+            return new Promise((resolve,  reject) => {
+                context.commit('uploading', true)
+                axios.post('/api/markdown/upload', form)
+                    .then( response => {
+                        context.commit('set_images', response.data)
+                        context.commit('uploading', false)
+                        resolve(response)
+                    })
+                    .catch( error => {
+                        context.commit('uploading', false)
+                        reject(error)
+                    })
+            })
         },
 
         deleteImage(context, image) {
-            axios.post('/api/markdown/delete', {image: image})
-                 .then( response => {
-                     context.commit('deleteImage', image)
-                 })
+            return new Promise((resolve, reject) => {
+                axios.post('/api/markdown/delete', {image: image})
+                    .then( response => {
+                        context.commit('deleteImage', image)
+                        resolve(response)
+                    })
+                    .catch(error => {
+                        reject(error)
+                    })
+            })
         }
     }
 }

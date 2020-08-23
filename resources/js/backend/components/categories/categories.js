@@ -46,13 +46,13 @@ export default {
 
                 axios.post('/api/categories', category)
                      .then( (response) => {
+
                         context.commit('new_category', response.data)
+
                         resolve(response)
-                        context.commit('set_flashmessage', {message: 'Category Created Successfully', type: 'success'}, { root: true })
                     })
-                    .catch( (error) => {
+                    .catch(error => {
                         reject(error)
-                        context.commit('set_flashmessage',{bag: error.response.data.errors, type: 'error'}, { root: true })
                     })
             })
         },
@@ -63,11 +63,9 @@ export default {
                      .then( (response) => {
                         context.commit('update_category', response.data)
                         resolve(response)
-                        context.commit('set_flashmessage', {message: 'Category Updated Successfully', type: 'success'}, { root: true })
                      })
                      .catch( (error) => {
                         reject(error)
-                        context.commit('set_flashmessage',{bag: error.response.data.errors, type: 'error'}, { root: true })
                     })
             })
         },
@@ -75,13 +73,12 @@ export default {
         deleteCategory(context, {index, category}) {
             return new Promise( (resolve, reject) => {
                 axios.delete(`/api/categories/${category.id}`)
-                    .then(res => {
+                    .then((response) => {
                         context.commit('delete_category', index)
-                        resolve(res)
-                        context.commit('set_flashmessage', {message: 'Category Deleted Successfully', type: 'success'}, {root: true})
+                        resolve(response)
                     })
                     .catch( error => {
-                        context.commit('set_flashmessage',{bag: error.response.data.errors, type: 'error'}, { root: true })
+                        reject(error)
                     })
             })
         },

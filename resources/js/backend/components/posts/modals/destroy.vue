@@ -1,15 +1,19 @@
 <template>
     <modal name="post-destroy" height="auto" :pivotY="0.2" :adaptive="true" @before-open="loadPost">
-         <div class="p-4 bg-main-dark text-white">
-            <h1 class="text-lg border-b border-navbar">Delete post Action</h1>
+         <div class="p-4 bg-main-dark text-white w-full ">
+            <h1 class="text-lg border-b border-navbar flex items-center justify-between pb-2">
+                Delete post
 
-            <p class="py-4">Are you sure you want to delete <span class="text-red-500" v-text="post.title"></span>?</p>
-
-            <div class="flex my-4 -mx-4">
-                <button class="flex-1 btn btn-blue mx-4" @click="$modal.hide('post-destroy')">
-                    Cancel
+                <button class="btn btn-blue mx-4" @click="$modal.hide('post-destroy')">
+                    X
                 </button>
-                <button class="flex-1 btn btn-indigo mx-4" @click="deletePost">
+            </h1>
+
+            <p class="py-4 bg-navbar px-4 py-2 my-3">Are you sure you want to delete <span class="text-red-500" v-text="post.title"></span>?</p>
+
+            <div class="flex mt-8">
+                
+                <button class="flex-1 btn btn-blue mx-4" @click="deletePost">
                     Delete
                 </button>
             </div>
@@ -30,8 +34,15 @@ export default {
     methods: {
         deletePost() {
             this.$store.dispatch('posts/deletePost', this.post)
-            this.$modal.hide('post-destroy')
-            this.$router.push({name: 'posts'})
+                       .then(() => {
+
+                            this.$modal.hide('post-destroy')
+                            this.$toasted.success('Post Deleted Successfully')
+                            this.$router.push({name: 'posts'})
+                       })
+                       .catch(error => {
+                           console.log(error)
+                       })
         },
 
         loadPost(e) {

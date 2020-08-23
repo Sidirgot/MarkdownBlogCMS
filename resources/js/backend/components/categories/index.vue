@@ -21,7 +21,7 @@
             <table class="table-auto w-full text-center">
 
                 <thead class="bg-main-dark rounded leading-10">
-                    <th>Name</th>
+                    <th class="py-2">Name</th>
                     <th>Actions</th>
                 </thead>
 

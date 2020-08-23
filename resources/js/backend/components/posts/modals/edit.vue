@@ -1,7 +1,9 @@
 <template>
     <modal name="post-edit" height="auto" :scrollable="true" :pivotY="0.2" :clickToClose="false" :adaptive="true" @before-open="loadData" @closed="closed">
-      <div class="p-2 bg-main-dark text-white" >
-
+      <div class="p-2 bg-main-dark text-white w-full">
+      <div class="text-right">
+        <button class="flex-1 btn btn-blue mx-4" @click="$modal.hide('post-edit')">X</button>
+      </div>
         <input type="text" v-model="data" class="bg-navbar p-2 w-full" v-if="(type === 'title' || type === 'slug')">
 
         <Markdown @body="bodyData" :val="data" v-if="type === 'content'"></Markdown>
@@ -21,9 +23,9 @@
             </figure>
         </div>
 
-        <div class="flex justify-between items-center my-4 -mx-4">
-          <button class="flex-1 btn btn-blue mx-4" @click="$modal.hide('post-edit')">Cancel</button>
-          <button class="flex-1 btn btn-indigo mx-4" @click="saveChanges">Save Changes</button>
+        <div class="flex justify-between items-center mt-8">
+          
+          <button class="flex-1 btn btn-blue mx-4" @click="saveChanges">Save Changes</button>
         </div>
       </div>
       <MarkdownImage @editImage="setImage"></MarkdownImage>
@@ -91,7 +93,10 @@ export default {
         var payload = { id: this.id, form: form}
 
         this.$store.dispatch('posts/updatePost', payload)
-        this.$modal.hide('post-edit')
+                  .then(() => {
+                      this.$modal.hide('post-edit')
+                      this.$toasted.success('Post Updated Successfully')
+                  })
       },
 
       closed(e) {

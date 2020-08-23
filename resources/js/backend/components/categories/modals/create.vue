@@ -1,6 +1,6 @@
 <template>
     <modal name="category-create" height="auto" transition="fade" :pivotY="0.2" :adaptive="true" :clickToClose="false">
-        <div class="p-4 bg-main-dark text-white">
+        <div class="p-4 bg-main-dark text-white w-full">
             <h1 class="text-lg py-2 border-b border-navbar pb-2 flex items-center justify-between">
                 Add a new category
 
@@ -9,13 +9,17 @@
                 </button>
             </h1>
 
+            <div>
+
+            </div>
+
             <div class="my-4">
                 <label for="name">Name <span class="text-blue-500 text-sm">(Required)</span></label>
                 <input type="text" v-model="category.name" class="bg-navbar rounded p-2 w-full" required>
             </div>
 
 
-            <div class="flex my-4 -mx-4">
+            <div class="flex mt-8">
                 
                 <button class="flex-1 btn btn-blue mx-4" @click.prevent="createCategory">
                     Create
@@ -27,6 +31,7 @@
 </template>
 
 <script>
+
 export default {
     name: 'category-create',
 
@@ -34,7 +39,8 @@ export default {
         return {
             category: {
                 name: '',
-            }
+            },
+            errors: []
         }
     },
 
@@ -42,7 +48,12 @@ export default {
         createCategory() {
             this.$store.dispatch('categories/createCategory', this.category)
                        .then( () => {
+                            this.$toasted.success('Category Created Successfully')
                             this.clearModal()
+                        })
+                        .catch(errors => {
+                            
+                            this.errors = errors
                         })
         },
 

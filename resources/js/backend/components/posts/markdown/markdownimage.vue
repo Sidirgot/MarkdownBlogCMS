@@ -78,10 +78,16 @@ export default {
             form.append('image',e.target.files[0])
 
             this.$store.dispatch('markdown/UploadImage', form)
+                       .then(() => {
+                           this.$toasted.success('Image Uploaded Successfully')
+                       })
         },
 
         deleteImage() {
             this.$store.dispatch('markdown/deleteImage', this.image)
+                       .then(() => {
+                           this.$toasted.success('Image Deleted Successfully')
+                       })
         },
 
         clearSelection() {

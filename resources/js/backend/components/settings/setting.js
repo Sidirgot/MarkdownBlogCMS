@@ -47,11 +47,11 @@ export default {
                 axios.post('/api/settings', setting)
                      .then( (response) => {
                         context.commit('new_setting', response.data)
+
                         resolve(response)
-                        context.commit('set_flashmessage', {message: 'Setting Created Successfully', type: 'success'}, { root: true })
                     })
                     .catch( (error) => {
-                        context.commit('set_flashmessage',{bag: error.response.data.errors, type: 'error'}, { root: true })
+                        reject(error)
                     })
             })
         },
@@ -62,10 +62,9 @@ export default {
                      .then( response => {
                         context.commit('update_setting', response.data)
                         resolve(response)
-                        context.commit('set_flashmessage', {message: 'Setting Updated Successfully', type: 'success'}, { root: true })
                      })
                      .catch(error => {
-                        context.commit('set_flashmessage',{bag: error.response.data.errors, type: 'error'}, { root: true })
+                        reject(error)
                     })
             })
         },
@@ -73,13 +72,12 @@ export default {
         deleteSetting(context, {index, setting}) {
             return new Promise( (resolve, reject) => {
                 axios.delete(`/api/settings/${setting.id}`)
-                    .then(res => {
+                    .then(response => {
                         context.commit('delete_setting', index)
-                        resolve(res)
-                        Bus.$emit('flash-message', {message: `Category ${setting.name} Deleted Successfully`,type: 'success'})
+                        resolve(response)
                     })
                     .catch( error => {
-                        Bus.$emit('flash-message',{bag: error.response.data.errors ,type:'error'})
+                        reject(error)
                     })
             })
         },

@@ -83,16 +83,14 @@ export default {
         createPost(context, post) {
             return new Promise( (resolve, reject) => {
                 context.commit('set_loading', true, { root: true})
-                 axios.post('/api/posts', post)
+                axios.post('/api/posts', post)
                       .then( ( response ) => {
                             context.commit('new_post', response.data)
                             resolve(response)
                             context.commit('set_loading', false, { root: true})
-                            context.commit('set_flashmessage',{message: 'Project Created Successfully', type: 'success'}, {root: true})
                         })
                         .catch( (error) => {
                             reject(error)
-                            context.commit('set_flashmessage', { bag: error.response.data.errors, type: 'error' }, {root: true})
                             context.commit('set_loading', false, { root: true})
                         })
             })
@@ -106,32 +104,49 @@ export default {
                             context.commit('update_post', response.data)
                             resolve(response)
                             context.commit('set_loading', false, { root: true})
-                            context.commit('set_flashmessage',{message: 'Project Updated Successfully', type: 'success'}, {root: true})
                         })
                         .catch( (error) => {
                             reject(error)
-                            context.commit('set_flashmessage', { bag: error.response.data.errors, type: 'error' }, {root: true})
                             context.commit('set_loading', false, { root: true})
                         })
             })
         },
 
         deletePost(context, post) {
+            return new Promise((resolve, reject) => {
+
                 context.commit('set_loading', true, { root: true})
+
                 axios.delete(`/api/posts/${post.id}`)
                     .then( (response) => {
                         context.commit('delete_post', post)
                         context.commit('set_loading', false, { root: true})
-                        context.commit('set_flashmessage', {message: 'Project Deleted Successfully', type: 'success'}, {root: true})
+
+                        resolve(response)
                     })
+                    .catch(error => {
+                        context.commit('set_loading', false, { root: true})
+
+                        reject(error)
+                    })
+            })
+                
         },
 
         changeStatus(context, {post, status}) {
-            axios.patch(`/api/action/${status}/${post.id}`)
-                 .then( (response) => {
-                     context.commit('set_post', response.data)
-                     context.commit('set_flashmessage',{message: `Project ${status} Successfully`, type: 'success'}, {root: true})
-                 })
+
+            return new Promise((resolve, reject) => {
+                axios.patch(`/api/action/${status}/${post.id}`)
+                    .then( (response) => {
+                        context.commit('set_post', response.data)
+
+                        resolve(response)
+                    })
+                    .catch(error => {
+                        reject(error)
+                    })
+            })
+            
         },
 
         filterPosts(context, payload) {

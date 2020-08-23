@@ -34,11 +34,10 @@ export default {
                 axios.patch(`/api/user/${user.id}`, user )
                      .then( response => {
                          context.commit('set_user', response.data)
-                         context.commit('set_flashmessage', {message: 'User Updated Successfully',type: 'success'}, { root: true });
                          resolve(response)
                     })
                      .catch(error => {
-                        context.commit('set_flashmessage',{bag: error.response.data.errors, type: 'error'}, { root: true })
+                        reject(error)
                      })
             })
         },
@@ -48,24 +47,25 @@ export default {
                 axios.post(`/api/user/${user.id}`, data)
                     .then( response => {
                         context.commit('set_user', response.data)
-                        context.commit('set_flashmessage', {message: 'Avatar Updated Successfully',type: 'success'}, { root: true });
                         resolve(response)
                     })
                     .catch(error => {
-                        context.commit('set_flashmessage',{bag: error.response.data.errors, type: 'error'}, { root: true })
+                        reject(error)
                     })
             })
         },
 
         deleteAvatar(context, user) {
-            axios.patch(`/api/reset/avatar/${user.id}`)
-                 .then( response => {
-                     context.commit('set_user', response.data)
-                     context.commit('set_flashmessage', {message: 'Avatar Updated Successfully',type: 'success'}, { root: true });
-                 })
-                 .catch(error => {
-                   context.commit('set_flashmessage',{bag: error.response.data.errors, type: 'error'}, { root: true })
-                 })
+            return new Promise((resolve, reject) => {
+                axios.patch(`/api/reset/avatar/${user.id}`)
+                    .then( response => {
+                        context.commit('set_user', response.data)
+                        resolve(response)
+                    })
+                    .catch(error => {
+                        reject(error)
+                    })
+            })
         },
     }
 }

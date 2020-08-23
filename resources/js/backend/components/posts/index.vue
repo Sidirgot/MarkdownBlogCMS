@@ -26,7 +26,7 @@
                 </thead>
                 <tbody>
                     <tr v-if="posts.length === 0">
-                        <td class="py-6">No records in the database.</td>
+                        <td class="py-6" colspan="3">No records found.</td>
                     </tr>
                     <tr class=" even:bg-main-dark odd:bg-navbar" v-for="post in posts " :key="post.id">
                         <td class="py-2">
