@@ -147,7 +147,7 @@ trait HandleImages
 
         foreach ($files as $key => $file) {
             // Create a full url for each image.
-            $url = url('/') . '/' . $file;
+            $url = url('/') . '/storage/' . $file;
 
             // Add 2 keys in a returned array for the actual image and its full url
             $images[$key]['image'] = $file;

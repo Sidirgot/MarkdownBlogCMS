@@ -14,12 +14,15 @@
 
         <div class="flex -mx-2" v-show="! loading">
             <div class="w-full md:w-2/3 mb-2 md:mb-0 mx-2">
+                <div class="p-2 rounded bg-blue-700 text-white">Double click on the Title, Image, Post Body, Category value or Slug value to edit it.</div>
                 <div class="bg-navbar rounded shadow text-white" style="padding:1.25rem 7.5vw 10px">
 
                     <h1 class="text-xl font-bold text-center my-3" @dblclick="$modal.show('post-edit',{id: post.id,data: post.title, type: 'title'})">{{ post.title }}</h1>
 
-                    <figure class="my-2" @dblclick="$modal.show('post-edit',{id: post.id,data: '/'+post.image, type: 'image'})">
-                        <img :src="'/'+ post.image" class="w-full rounded shadow" />
+                    <figure  class="my-2" @dblclick="$modal.show('post-edit',{id: post.id,data: post.image, type: 'image'})">
+                        <img  v-if="post.image" :src="'/storage/'+ post.image" class="w-full rounded shadow" />
+
+                        <div class="text-center border p-4 rounded bg-main-dark" v-if="! post.image">No images selected for this post. Doouble click to select / upload image.</div>
                     </figure>
 
                     <div v-html="post.parsed" class="markdown_css my-3 text-sm" @dblclick="$modal.show('post-edit',{id: post.id,data: post.content, type: 'content'})">

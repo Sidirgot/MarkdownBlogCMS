@@ -44,7 +44,7 @@ export default {
 
     actions: {
 
-        async postFormData() {
+        postFormData() {
             return new Promise( (resolve, reject) => {
                 axios.get('/api/post/formData')
                      .then((response) => {

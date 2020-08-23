@@ -7,7 +7,7 @@
         <div class="bg-gray-600 relative">
             <span class="absolute w-full h-full" style="background: rgba(0,0,0,0.3);"></span>
 
-            <img src="{{ $pinned->image }}" class="image-cover w-full object-cover" style="height:700px" alt="{{ $pinned->image }}">
+            <img src="{{ '/storage/' . $pinned->image }}" class="image-cover w-full object-cover" style="height:700px" alt="{{ $pinned->image }}">
 
             <div class="absolute text-white text-2xl tracking-wider rounded p-4" style="left: 2%; bottom: 10%; background: rgba(0,0,0,0.3);">
                 <h1>
@@ -34,7 +34,7 @@
 
                     <div class="w-full md:w-2/4">
                         <a href="{{ route('post', $post->slug) }}">
-                            <img src="{{ $post->image }}" class=" w-full object-cover rounded hover:opacity-75" alt="{{ $post->image }}">
+                            <img src="{{ '/storage/' . $post->image }}" class=" w-full object-cover rounded hover:opacity-75" alt="{{ $post->image }}">
                         </a>
                     </div>
 

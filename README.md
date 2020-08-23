@@ -26,7 +26,7 @@ The Application is an API driven, Markdown-based Backend CMS for a blog-like web
 
 - The application is built around a single user.
   
-- Posts CRUD. Includes a status flag to provide the ability to have a draft post.
+- Posts CRUD. Includes a status flag to provide the ability to have draft post.
   
 - Every Post belongs to a single Category.
   

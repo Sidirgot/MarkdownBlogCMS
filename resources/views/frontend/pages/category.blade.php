@@ -14,7 +14,7 @@
 
                     <div class="w-full md:w-2/4">
                         <a href="{{ route('post', $post->slug) }}">
-                            <img src="{{ url($post->image) }}" class=" w-full object-cover rounded hover:opacity-75" alt="{{ $post->image }}">
+                            <img src="{{ '/storage/' .$post->image }}" class=" w-full object-cover rounded hover:opacity-75" alt="{{ $post->image }}">
                         </a>
                     </div>
 
