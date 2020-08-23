@@ -65,16 +65,6 @@ class User extends Authenticatable
      */
     public function resetAvatar()
     {
-        return $this->update(['avatar' => 'assets/user-avatar.jpg']);
-    }
-
-    /**
-     * Get the users avatar image.
-     *
-     * @param $query
-     */
-    public static function getAvatarAttribute($avatar)
-    {
-        return '/'.$avatar;
+        return $this->update(['avatar' => null]);
     }
 }

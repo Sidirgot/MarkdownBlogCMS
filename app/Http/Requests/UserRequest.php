@@ -36,36 +36,4 @@ class UserRequest extends FormRequest
             'password' => 'sometimes|min:5'
         ];
     }
-
-    /**
-     * Update User Profile Information.
-     *
-     */
-    public function updateProfile()
-    {
-        $attributes = $this->validated();
-
-        if (array_key_exists('avatar', $attributes)) {
-            $attributes['avatar'] = $this->uploadProfileImage();
-        }
-
-        $this->user->update($attributes);
-    }
-
-    /**
-     * Handle the image upload process.
-     *
-     * @return string
-     */
-    protected function uploadProfileImage()
-    {
-        // if user has the default profile image
-        if ($this->user->avatar === '/assets/user-avatar.jpg') {
-            return $this->uploadImage($this->avatar, true);
-        }
-        // if user has a different image than the default 
-        else if ($this->user->avatar != '/assets/user-avatar.jpg' ) {
-            return $this->updateImage($this->user->avatar, $this->avatar, true);
-        }
-    }
 }

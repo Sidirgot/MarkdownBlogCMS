@@ -2,75 +2,148 @@
 
 namespace App\Traits;
 
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Image;
 
 trait HandleImages
 {
-
-    /**
-     * References one of the disk drives declared in config/filesystems
-     *
+   /**
+     * Working Disk.
+     * 
      * @var string
      */
-    private $disk = 'public_uploads';
+    private string $workingDisk = 'public';
 
     /**
-     * References the name of the folder to be used inside the disk
-     *
+     * Working Directory.
+     * 
      * @var string
      */
-    private $folder_name = 'uploads';
+    private string $workingDir;
 
     /**
-     * Uploads an Image to the $disk/$folder_name.
-     * Var $assets indicates if the file is an asset.
-     * if $asset = true, the file is saved under the assets folder.
+     * Image Width
+     *
+     * @var integer
+     */
+    private $width = 800;
+
+    /**
+     * Set the working disk.
+     *
+     * @param string
+     */
+    public function disk(string $disk = null)
+    {
+        $this->workingDisk = $disk ? $disk : $this->workingDisk;
+
+        return $this;
+    }
+
+    /**
+     * Set the working folder.
+     *
+     * @param string $folder
+     */
+    public function folder(string $folder)
+    {
+        $this->workingDir = $folder . '/';
+
+        return $this;
+    }
+
+    /**
+     * Set the image width
+     *
+     * @param int $width
+     */
+    public function setWidth(int $width)
+    {
+        $this->width = $width ? $width : $this->width;
+
+        return $this;
+    }
+
+    /**
+     * Uploads an Image to the $workingDisk/$workingDir storage foler.
      *
      * @param \Illuminate\Http\UploadedFile $image
      */
-    public function uploadImage($image, $assets = false)
+    public function uploadImage(UploadedFile $image)
     {
-        return $image->storeAs($assets ? 'assets' : $this->folder_name, $image->getClientOriginalName(), $this->disk);
+        $imageName = $this->generateName($image->getClientOriginalExtension());
+
+        $resizedImage = $this->resize($image);
+
+        $this->save($imageName, $resizedImage);
+
+        return $this->workingDir . $imageName;
     }
 
     /**
-     * Deletes an image from the disk and uploads a new one.
-     * Var $assets indicates if the file is an asset.
-     * if $asset = true, the file is saved under the assets folder.
+     * Deletes an image from the workingDisk/workingDir.
      *
      * @param string $oldImage path
      * @param \Illuminate\Http\UploadedFile $newImage
-     * @param boolean $profile
      */
-    public function updateImage($oldImage, $newImage, $assets = false)
+    public function updateImage(string $oldImage, UploadedFile $newImage)
     {
         $this->deleteImage($oldImage);
 
-        return $this->uploadImage($newImage, $assets ? true : '');
+        return $this->uploadImage($newImage);
     }
 
     /**
-     * Deletes an image from the $disk/$folder_name
+     * Deletes an image from the workingDisk/workingDir.
      *
      * @param string $image path
      */
     public function deleteImage($image)
     {
-        if (Storage::disk($this->disk)->exists($image)) {
-            Storage::disk($this->disk)->delete($image);
+        if (Storage::disk($this->workingDisk)->exists($image)) {
+            Storage::disk($this->workingDisk)->delete($image);
         };
     }
 
     /**
-     * Get's every image from the $disk/$folder_name
+     * Resize the image to specified width maintaining the aspect ratio.
      *
-     * @return array $image with the image and the full url
+     * @param UploadedFile $image
      */
-    public function getAllImages()
+    protected function resize(UploadedFile $image)
+    {
+        $result = Image::make($image)->resize($this->width, null, function ($constraint) {
+            $constraint->aspectRatio();     
+        });
+
+        $result->stream();
+
+        return $result;
+    }
+
+    /**
+     * Save the image to the workingDisk/workingDir.
+     *
+     * @param string $imageName
+     * @param $image
+     * @return void
+     */
+    protected function save(string $imageName, $image)
+    {
+        Storage::disk($this->workingDisk)->put($this->workingDir . $imageName, $image);
+    }
+
+    /**
+     * Get's every image from the $workingDisk/$workingDir
+     *
+     * @return array with 2 keys [ image and full url of the image ]
+     */
+    public function get_all_images()
     {
         $images = [];
         // Get all the files from the specified folder on the disk.
-        $files =  Storage::disk($this->disk)->files($this->folder_name);
+        $files =  Storage::disk($this->workingDisk)->files($this->workingDir);
 
         foreach ($files as $key => $file) {
             // Create a full url for each image.
@@ -82,5 +155,16 @@ trait HandleImages
         }
 
         return $images;
+    }
+
+     /**
+     * Generate image name based on the current unix time.
+     *
+     * @param [type] $mime
+     * @return string
+     */
+    protected function generateName($mime)
+    {
+        return time().".".$mime;
     }
 }

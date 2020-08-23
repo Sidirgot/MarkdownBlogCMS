@@ -25,7 +25,7 @@ export default {
             state.post = post
         },
 
-        detele_post(state, post) {
+        delete_post(state, post) {
             var index = state.posts.findIndex(postItem => postItem.id === post.id)
             state.posts.splice(index, 1)
         }

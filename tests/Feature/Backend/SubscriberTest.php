@@ -20,4 +20,16 @@ class SubscriberTest extends TestCase
 
         $this->assertEquals($res['total'], count($subs));
     }
+
+    /** @test */
+    public function delete_a_subscriber()
+    {
+        $this->admin();
+
+        $sub = factory(Subscriber::class)->create();
+
+        $this->json('delete', route('subscribers.destroy', $sub->id));
+        
+        $this->assertDatabaseMissing('subscribers', ['email' => $sub->email]);
+    }
 }

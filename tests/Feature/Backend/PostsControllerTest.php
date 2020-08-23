@@ -27,18 +27,17 @@ class PostsControllerTest extends TestCase
 
         $category = factory(Category::class)->create();
 
-        Storage::fake('public_uploads');
+        Storage::fake('public');
 
         $data = factory(Post::class)->raw([
                 'category_id' => $category->id,
-                'image' => $file = UploadedFile::fake()->image('post.jpg')
+                'image' => UploadedFile::fake()->image('post.jpg')
         ]);
 
         $response = $this->json('post', route('posts.store'), $data)->decodeResponseJson();
 
         $this->assertDatabaseHas('posts', ['title' => $data['title']]);
-        $this->assertEquals('uploads/'.$file->getClientOriginalName(), $response['image']);
-        Storage::disk('public_uploads')->assertExists('uploads/' . $file->getClientOriginalName());
+        Storage::disk('public')->assertExists($response['image']);
     }
 
     /** @test */
@@ -64,14 +63,14 @@ class PostsControllerTest extends TestCase
     {
         $this->admin();
 
-        Storage::fake('public_uploads');
+        Storage::fake('public');
 
         $post = $this->createPost();
 
         $response = $this->json('delete', route('posts.destroy', $post))->decodeResponseJson();
 
         $this->assertDatabaseMissing('posts', ['title' => $post['title']]);
-        Storage::disk('public_uploads')->assertMissing($post->image);
+        Storage::disk('public')->assertMissing($post->image);
         $this->assertEquals('deleted', $response);
     }
 

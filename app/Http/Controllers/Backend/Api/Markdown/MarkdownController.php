@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend\Api\Markdown;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\MarkdownImageUploadRequest;
 use App\Traits\HandleImages;
 
 class MarkdownController extends Controller
@@ -16,22 +17,19 @@ class MarkdownController extends Controller
      */
     public function index()
     {
-        return $this->getAllImages();
+        return $this->fetch_images();
     }
 
     /**
      * Upload images
      *
+     * @param App\Http\Requests\MarkdownImageUploadRequest $request.
      */
-    public function upload()
+    public function upload(MarkdownImageUploadRequest $request)
     {
-        $this->validate(request(), [
-            'image' => 'required|file|image|max:5000'
-        ]);
+        $this->folder('uploads')->uploadImage($request->validated()['image']);
 
-        $this->uploadImage(request()->file('image'));
-
-        $images = $this->getAllImages();
+        $images = $this->fetch_images();
 
         return response()->json($images, 201);
     }
@@ -45,5 +43,15 @@ class MarkdownController extends Controller
         $this->deleteImage(request()->image);
 
         return response()->json('deleted', 200);
+    }
+
+    /**
+     * Get all the images from the disk/folder.
+     *
+     * @return void
+     */
+    private function fetch_images()
+    {
+        return $this->folder('uploads')->get_all_images();
     }
 }

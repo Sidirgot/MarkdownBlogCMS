@@ -27,4 +27,17 @@ class SubscribersController extends Controller
     {
         return response()->json($subscriber, 200);
     }
+
+    /**
+     * Delete the specified resource.
+     *
+     * @param  App\Subscriber
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Subscriber $subscriber)
+    {
+        $subscriber->delete();
+        
+        return response()->json('done', 204);
+    }
 }

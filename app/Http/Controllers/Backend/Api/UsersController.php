@@ -29,7 +29,13 @@ class UsersController extends Controller
      */
     public function update(UserRequest $request, User $user)
     {
-        $request->updateProfile();
+        $attributes = $request->validated();
+
+        if (isset($attributes['avatar'])) {
+            $attributes['avatar'] = $this->handleAvatarImage($attributes, $user);
+        }
+
+        $user->update($attributes);
 
         return response()->json($user->fresh(), 201);
     }
@@ -46,5 +52,17 @@ class UsersController extends Controller
         $user->resetAvatar();
 
         return response()->json($user->fresh(), 201);
+    }
+
+    /**
+     * Handle the avatar image upload / update.
+     *
+     * @return array $attributes
+     */
+    protected function handleAvatarImage(array $attributes, User $user)
+    {
+        return $user->avatar == null ? 
+                    $this->folder('assets')->uploadImage($attributes['avatar']) :
+                    $this->folder('assets')->updateImage($user->avatar, $attributes['avatar']);
     }
 }

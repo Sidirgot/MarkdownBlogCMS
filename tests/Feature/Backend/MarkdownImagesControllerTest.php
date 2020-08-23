@@ -23,7 +23,7 @@ class MarkdownImagesControllerTest extends TestCase
     {
         $this->admin();
 
-        Storage::fake('public_uploads');
+        Storage::fake('public');
 
         $image = [ 'image' => UploadedFile::fake()->image('markdown.jpg')];
 
@@ -31,7 +31,7 @@ class MarkdownImagesControllerTest extends TestCase
                          ->assertStatus(201)
                          ->decodeResponseJson();
 
-        Storage::disk('public_uploads')->assertExists('uploads/', $image['image']->getClientOriginalname());
+        Storage::disk('public')->assertExists('uploads/', $image['image']->getClientOriginalname());
         $this->assertCount(1, $response);
     }
 
@@ -40,13 +40,11 @@ class MarkdownImagesControllerTest extends TestCase
     {
         $this->admin();
 
-        Storage::fake('public_uploads');
+        Storage::fake('public');
 
         $image = [ 'image' => UploadedFile::fake()->image('markdown.jpg')];
 
         $this->json('post', route('markdown.upload'), $image)->decodeResponseJson();
-
-        Storage::disk('public_uploads')->assertExists('uploads/', $image['image']->getClientOriginalname());
 
         $response = $this->json('get', route('markdown.images'))->decodeResponseJson();
 
@@ -58,18 +56,18 @@ class MarkdownImagesControllerTest extends TestCase
      {
         $this->admin();
 
-        Storage::fake('public_uploads');
+        Storage::fake('public');
 
         $image = [ 'image' => UploadedFile::fake()->image('markdown.jpg')];
 
         $this->json('post', route('markdown.upload'), $image)->decodeResponseJson();
 
-        Storage::disk('public_uploads')->assertExists('uploads/', $image['image']->getClientOriginalname());
+        Storage::disk('public')->assertExists('uploads/', $image['image']->getClientOriginalname());
 
         $response = $this->json('get', route('markdown.images'))->decodeResponseJson();
 
         $this->json('post', route('markdown.destroy'), $response[0]);
 
-        Storage::disk('public_uploads')->assertMissing('uploads/'. $image['image']->getClientOriginalname());
+        Storage::disk('public')->assertMissing('uploads/'. $image['image']->getClientOriginalname());
      }
 }

@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Post;
 use App\Traits\HandleImages;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 
 class PostObserver
@@ -23,8 +24,10 @@ class PostObserver
         }
 
         if (isset($post['image']) && $post['image'] instanceof \Illuminate\Http\UploadedFile) {
-            $post['image'] = $this->uploadImage($post['image']);
+            $post['image'] = $this->folder('uploads')->uploadImage($post['image']);
         }
+
+        $post['published'] = $post['status'] == 1 ? Carbon::now() : null;
     }
 
     /**

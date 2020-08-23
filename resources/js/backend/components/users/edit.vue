@@ -5,16 +5,16 @@
                 <h1 class="text-lg py-2">Update User Profile</h1>
 
                 <button @click="$modal.hide('user-edit')" class="btn btn-blue">
-                    <i class="fas fa-times"></i>
+                    X
                 </button>
             </div>
 
-            <div class="flex my-2">
-                <button class="btn btn-indigo mx-2" @click="panel = '1'">Profile Details</button>
-                <button class="btn btn-indigo mx-2" @click="panel = '2'">Profile Avatar</button>
+            <div class="flex justify-center items-center tracking-widest my-2">
+                <button class="btn btn-blue mx-2" :class="{'bg-transparent border hover:opacity' : panel === 'profile_details'}" @click="panel = 'profile_details'">Profile Details</button>
+                <button class="btn btn-blue mx-2" :class="{'bg-transparent border hover:opacity' : panel === 'profile_avatar'}" @click="panel = 'profile_avatar'">Profile Avatar</button>
             </div>
 
-            <div v-show="panel === '1'">
+            <div v-show="panel === 'profile_details'">
                 <div class="my-4">
                     <label for="name">Name <span class="text-blue-500 text-sm">(Optional)</span></label>
                     <input type="text" v-model="user.name" class="bg-navbar rounded p-2 w-full" autocomplete="off">
@@ -30,13 +30,12 @@
                     <input type="password" v-model="user.password" class="bg-navbar rounded p-2 w-full" autocomplete="new-password">
                 </div>
 
-                <div class="flex my-4 -mx-4">
-                    <button class="flex-1 btn btn-blue mx-4" @click="$modal.hide('user-edit')">Cancel</button>
-                    <button class="flex-1 btn btn-indigo mx-4" @click="saveChanges">Update</button>
+                <div class="flex mt-8 -mx-4">
+                    <button class="flex-1 btn btn-blue mx-4" @click="saveChanges">Update</button>
                 </div>
             </div>
 
-            <div v-show="panel === '2'">
+            <div v-show="panel === 'profile_avatar'">
                 <profileAvatar/>
             </div>
 
@@ -45,7 +44,7 @@
 </template>
 
 <script>
-import profileAvatar from './settings/profileAvatar'
+import profileAvatar from './profileAvatar'
 
 export default {
     components: {profileAvatar},
@@ -53,7 +52,7 @@ export default {
     data() {
         return {
             user: {},
-            panel: '1',
+            panel: "profile_details",
         }
     },
 

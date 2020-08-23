@@ -16,10 +16,10 @@ class UsersTest extends TestCase
      {
         $user =  $this->admin();
 
-        $user->avatar = '/assets/avatar.jpg';
+        $user->avatar = null;
 
         $user->resetAvatar();
 
-        $this->assertEquals($user->fresh()->avatar, '/assets/user-avatar.jpg');
+        $this->assertEquals($user->fresh()->avatar, null);
      }
 }

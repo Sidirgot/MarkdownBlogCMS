@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend\Api\Posts;
 use App\Post;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostRequest;
+use Carbon\Carbon;
 
 class PostsController extends Controller
 {
@@ -35,7 +36,9 @@ class PostsController extends Controller
      */
     public function store(PostRequest $request)
     {
-        $post = auth()->user()->post()->create($request->validated());
+        $attributes = $request->validated();
+        
+        $post = auth()->user()->post()->create($attributes);
 
         return response()->json($post->load('category'), 201);
     }

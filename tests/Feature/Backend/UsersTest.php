@@ -45,16 +45,14 @@ class UsersTest extends TestCase
     {
         $user = $this->admin();
 
-        Storage::fake('public_uploads');
+        Storage::fake('public');
 
         $data = [ 'avatar' => UploadedFile::fake()->image('avatar.jpg') ];
 
         $response = $this->json('patch', route('user.update', $user), $data)->decodeResponseJson();
-
-        Storage::disk('public_uploads')->assertExists('assets/'. $data['avatar']->getClientOriginalname());
-
-        $this->assertNotEquals($response['avatar'], 'assets/user-avatar.jpg');
-        $this->assertEquals($response['avatar'], '/assets/' . $data['avatar']->getClientOriginalName());
+        
+        $this->assertNotNull($response['avatar']);
+        Storage::disk('public')->assertExists($response['avatar']);
     }
 
     /** @test */
@@ -62,23 +60,20 @@ class UsersTest extends TestCase
     {
         $user = $this->admin();
 
-        Storage::fake('public_uploads');
+        Storage::fake('public');
 
         $image = [ 'avatar' => UploadedFile::fake()->image('avatar.jpg') ];
 
         $response = $this->json('patch', route('user.update', $user), $image)->decodeResponseJson();
 
-        Storage::disk('public_uploads')->assertExists('assets/'. $image['avatar']->getClientOriginalname());
-
-        $this->assertNotEquals($response['avatar'], 'assets/user-avatar.jpg');
-        $this->assertEquals($response['avatar'], '/assets/' . $image['avatar']->getClientOriginalName());
-
         $newImage = [ 'avatar' => UploadedFile::fake()->image('newAvatar.jpg') ];
 
         $this->json('patch', route('user.update', $user->fresh()), $newImage);
 
-        Storage::disk('public_uploads')->assertExists('assets/'. $newImage['avatar']->getClientOriginalname());
-        Storage::disk('public_uploads')->assertMissing('assets/'. $image['avatar']->getClientOriginalname());
+        $user_new = $user->fresh();
+
+        Storage::disk('public')->assertExists($user_new->avatar);
+        Storage::disk('public')->assertMissing($user->avatar);
     }
 
     /** @test */
@@ -86,20 +81,15 @@ class UsersTest extends TestCase
     {
         $user = $this->admin();
 
-        Storage::fake('public_uploads');
+        Storage::fake('public');
 
         $image = [ 'avatar' => UploadedFile::fake()->image('avatar.jpg') ];
 
-        $response = $this->json('patch', route('user.update', $user), $image)->decodeResponseJson();
+        $this->json('patch', route('user.update', $user), $image)->decodeResponseJson();
 
-        Storage::disk('public_uploads')->assertExists('assets/'. $image['avatar']->getClientOriginalname());
+        $response = $this->json('patch', route('reset.avatar', $user))->decodeResponseJson();
 
-        $this->assertNotEquals($response['avatar'], 'assets/user-avatar.jpg');
-        $this->assertEquals($response['avatar'], '/assets/' . $image['avatar']->getClientOriginalName());
-
-        $response2 = $this->json('patch', route('reset.avatar', $user))->decodeResponseJson();
-
-        Storage::disk('public_uploads')->assertMissing('assets/'. $image['avatar']->getClientOriginalname());
-        $this->assertEquals($response2['avatar'], '/assets/user-avatar.jpg');
+        Storage::disk('public')->assertMissing($user->avatar);
+        $this->assertEquals($response['avatar'], null);
     }
 }

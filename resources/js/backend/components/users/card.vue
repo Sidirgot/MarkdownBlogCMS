@@ -2,7 +2,7 @@
     <div class="flex items-center relative">
         <div>
             <button class="mr-3 flex items-center hover:opacity-50 focus:outline-none" @click="open = !open">
-                <img class="w-12 rounded-full mr-4 ml-0 md:ml-5" :src="this.user.avatar">
+                <img class="w-12 rounded-full mr-4 ml-0 md:ml-5" :src="'/storage/' + user.avatar" v-if="user.avatar">
                 {{ user.name }}
             </button>
 
