@@ -36,7 +36,7 @@ The Application is an API driven, Markdown-based Backend CMS for a blog-like web
   - All the uploaded images are set to be saved on the storage public disk. 
    Since everyone has a different way to handle images, I wanted to keep it as simple as possible. All the functionality is provided through a HandleImages trait, to provide the flexibility of swapping the implementation easily.
 
-- 85% of the application is covered from Test Driven Development.
+- 85% of the backend CMS is covered from TDD tests.
 
 > The Javascript files for backend and frontend are compiled separately. This is mainly to provide the ability to choose a blade-like approach for the frontend and also to keep the javascript on the frontend to a minimum.
 
