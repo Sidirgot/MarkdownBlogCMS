@@ -62,7 +62,7 @@ class UsersController extends Controller
     protected function handleAvatarImage(array $attributes, User $user)
     {
         return $user->avatar == null ? 
-                    $this->folder('assets')->uploadImage($attributes['avatar']) :
-                    $this->folder('assets')->updateImage($user->avatar, $attributes['avatar']);
+                    $this->folder('assets')->setWidth(50)->uploadImage($attributes['avatar']) :
+                    $this->folder('assets')->setWidth(50)->updateImage($user->avatar, $attributes['avatar']);
     }
 }
